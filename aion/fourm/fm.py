@@ -164,11 +164,7 @@ class FourM(nn.Module):
         nn.init.normal_(self.mask_token, std=self.init_std)
 
         # Additional register tokens that can be used by the encoder during fine-tuning
-        if self.num_register_tokens > 0:
-            self.register_tokens = nn.Parameter(torch.zeros(1, self.num_register_tokens, dim))
-            nn.init.normal_(self.register_tokens, std=self.init_std)
-        else:
-            self.register_tokens = None
+        self.add_register_tokens(num_register_tokens)
 
         # Weight init
         self.init_weights()
@@ -223,6 +219,16 @@ class FourM(nn.Module):
 
     def get_num_layers(self):
         return self.get_num_layers_encoder() + self.get_num_layers_decoder()
+    
+    def add_register_tokens(self, num_register_tokens: int):
+        if self.num_register_tokens > 0 and getattr(self, 'register_tokens', None) is not None:
+            raise ValueError("Register tokens already exist")
+        self.num_register_tokens = num_register_tokens
+        if self.num_register_tokens > 0:
+            self.register_tokens = nn.Parameter(torch.zeros(1, self.num_register_tokens, self.dim))
+            nn.init.normal_(self.register_tokens, std=self.init_std)
+        else:
+            self.register_tokens = None
 
     @torch.jit.ignore
     def no_weight_decay(self):
