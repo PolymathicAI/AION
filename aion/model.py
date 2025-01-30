@@ -235,12 +235,17 @@ class AION(FM):
             decoder_attention_mask,
         )
 
-        # Now, we compute the logits for the requested tokens and return them
-        mod_logits = {}
-        for mod in target_mask.keys():
-            idx = self.modality_info[mod]["id"]
-            mod_logits[mod] = self.decoder_embeddings[mod].forward_logits(
-                decoder_output[decoder_mod_mask == idx]
-            )
+        if target_mask is not None:
+            # Now, we compute the logits for the requested tokens and return them
+            mod_logits = {}
+            for mod in target_mask.keys():
+                idx = self.modality_info[mod]["id"]
+                mod_logits[mod] = self.decoder_embeddings[mod].forward_logits(
+                    decoder_output[decoder_mod_mask == idx]
+                )
+        elif target_dict is not None:
+            mod_logits = self.forward_logits(decoder_output, target_dict, decoder_mod_mask, return_all_logits=True)
+        else:
+            raise ValueError("Either target_mask or target_dict must be provided")
 
         return mod_logits
