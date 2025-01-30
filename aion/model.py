@@ -103,6 +103,7 @@ class AION(FM):
 
         device = next(self.parameters()).device
 
+        import pdb; pdb.set_trace()
         if target_mask is not None:
             decoder_mod_dict = {}
             for mod, mask in target_mask.items():
