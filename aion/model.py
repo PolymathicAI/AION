@@ -135,6 +135,7 @@ class AION(FM):
             decoder_attention_mask,
             decoder_mod_mask,
         ) = self.forward_mask_decoder(decoder_mod_dict, num_decoder_tokens)
+
         return (
             decoder_tokens,
             decoder_emb,
@@ -142,6 +143,7 @@ class AION(FM):
             target_ids,
             decoder_attention_mask,
             decoder_mod_mask,
+            decoder_mod_dict,
         )
 
     def _encode(self, encoder_tokens, encoder_emb, encoder_mask):
@@ -221,6 +223,7 @@ class AION(FM):
             target_ids,
             decoder_attention_mask,
             decoder_mod_mask,
+            decoder_mod_dict,
         ) = self.embed_targets(
             target_mask, target_dict, num_decoder_tokens=num_decoder_tokens
         )
@@ -243,9 +246,9 @@ class AION(FM):
                 mod_logits[mod] = self.decoder_embeddings[mod].forward_logits(
                     decoder_output[decoder_mod_mask == idx]
                 )
+            return mod_logits
         elif target_dict is not None:
-            mod_logits = self.forward_logits(decoder_output, target_dict, decoder_mod_mask, return_all_logits=True)
+            loss, mod_loss = self.forward_loss(decoder_output, target_ids, decoder_mod_dict, decoder_mod_mask, 'mod')
+            return loss, mod_loss
         else:
             raise ValueError("Either target_mask or target_dict must be provided")
-
-        return mod_logits
