@@ -186,69 +186,69 @@ class AION(FM):
         )
         return self._encode(encoder_tokens, encoder_emb, encoder_mask)
 
-    def forward(
-        self,
-        input_dict: Dict[str, torch.Tensor],
-        target_mask: Optional[Dict[str, torch.Tensor]] = None,
-        target_dict: Optional[Dict[str, torch.Tensor]] = None,
-        input_mask: Optional[Dict[str, torch.Tensor]] = None,
-        num_decoder_tokens: int = 256,
-        num_encoder_tokens: int = 256,
-    ) -> torch.Tensor:
-        """
-        The forward function returns the logits of the requested target outputs, given the input data.
+    # def forward(
+    #     self,
+    #     input_dict: Dict[str, torch.Tensor],
+    #     target_mask: Optional[Dict[str, torch.Tensor]] = None,
+    #     target_dict: Optional[Dict[str, torch.Tensor]] = None,
+    #     input_mask: Optional[Dict[str, torch.Tensor]] = None,
+    #     num_decoder_tokens: int = 256,
+    #     num_encoder_tokens: int = 256,
+    # ) -> torch.Tensor:
+    #     """
+    #     The forward function returns the logits of the requested target outputs, given the input data.
 
-        Args:
-            input_dict (Dict[str, torch.Tensor]): Input data dictionary.
-            target_mask (Dict[str, torch.Tensor]): Target mask dictionary, defines which modalities to predict, and which tokens within that modality.
-            input_mask (Dict[str, torch.Tensor], optional): Input mask dictionary. Defaults to None.
-            num_encoder_tokens (int, optional): Maximum number of encoder tokens. Defaults to 256.
+    #     Args:
+    #         input_dict (Dict[str, torch.Tensor]): Input data dictionary.
+    #         target_mask (Dict[str, torch.Tensor]): Target mask dictionary, defines which modalities to predict, and which tokens within that modality.
+    #         input_mask (Dict[str, torch.Tensor], optional): Input mask dictionary. Defaults to None.
+    #         num_encoder_tokens (int, optional): Maximum number of encoder tokens. Defaults to 256.
 
-        Returns:
-            torch.Tensor: Output tensor of the model.
-        """
-        if target_mask is None and target_dict is None:
-            raise ValueError("Either target_mask or target_dict must be provided")
-        if target_mask is not None and target_dict is not None:
-            raise ValueError("Only one of target_mask or target_dict can be provided")
+    #     Returns:
+    #         torch.Tensor: Output tensor of the model.
+    #     """
+    #     if target_mask is None and target_dict is None:
+    #         raise ValueError("Either target_mask or target_dict must be provided")
+    #     if target_mask is not None and target_dict is not None:
+    #         raise ValueError("Only one of target_mask or target_dict can be provided")
 
-        # Embedding inputs and targets
-        encoder_tokens, encoder_emb, encoder_mask, _ = self.embed_inputs(
-            input_dict, mask=input_mask, num_encoder_tokens=num_encoder_tokens
-        )
-        (
-            decoder_tokens,
-            decoder_emb,
-            decoder_mask,
-            target_ids,
-            decoder_attention_mask,
-            decoder_mod_mask,
-            decoder_mod_dict,
-        ) = self.embed_targets(
-            target_mask, target_dict, num_decoder_tokens=num_decoder_tokens
-        )
+    #     # Embedding inputs and targets
+    #     encoder_tokens, encoder_emb, encoder_mask, _ = self.embed_inputs(
+    #         input_dict, mask=input_mask, num_encoder_tokens=num_encoder_tokens
+    #     )
+    #     (
+    #         decoder_tokens,
+    #         decoder_emb,
+    #         decoder_mask,
+    #         target_ids,
+    #         decoder_attention_mask,
+    #         decoder_mod_mask,
+    #         decoder_mod_dict,
+    #     ) = self.embed_targets(
+    #         target_mask, target_dict, num_decoder_tokens=num_decoder_tokens
+    #     )
 
-        # Run the encoder
-        encoder_output = self._encode(encoder_tokens, encoder_emb, encoder_mask)
-        decoder_output = self._decode(
-            encoder_output,
-            encoder_mask,
-            decoder_tokens,
-            decoder_emb,
-            decoder_attention_mask,
-        )
+    #     # Run the encoder
+    #     encoder_output = self._encode(encoder_tokens, encoder_emb, encoder_mask)
+    #     decoder_output = self._decode(
+    #         encoder_output,
+    #         encoder_mask,
+    #         decoder_tokens,
+    #         decoder_emb,
+    #         decoder_attention_mask,
+    #     )
 
-        if target_mask is not None:
-            # Now, we compute the logits for the requested tokens and return them
-            mod_logits = {}
-            for mod in target_mask.keys():
-                idx = self.modality_info[mod]["id"]
-                mod_logits[mod] = self.decoder_embeddings[mod].forward_logits(
-                    decoder_output[decoder_mod_mask == idx]
-                )
-            return mod_logits
-        elif target_dict is not None:
-            loss, mod_loss = self.forward_loss(decoder_output, target_ids, decoder_mod_dict, decoder_mod_mask, 'mod')
-            return loss, mod_loss
-        else:
-            raise ValueError("Either target_mask or target_dict must be provided")
+    #     if target_mask is not None:
+    #         # Now, we compute the logits for the requested tokens and return them
+    #         mod_logits = {}
+    #         for mod in target_mask.keys():
+    #             idx = self.modality_info[mod]["id"]
+    #             mod_logits[mod] = self.decoder_embeddings[mod].forward_logits(
+    #                 decoder_output[decoder_mod_mask == idx]
+    #             )
+    #         return mod_logits
+    #     elif target_dict is not None:
+    #         loss, mod_loss = self.forward_loss(decoder_output, target_ids, decoder_mod_dict, decoder_mod_mask, 'mod')
+    #         return loss, mod_loss
+    #     else:
+    #         raise ValueError("Either target_mask or target_dict must be provided")
