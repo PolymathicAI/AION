@@ -88,10 +88,18 @@ class AION(FM):
                 - decoder_attention_mask (torch.Tensor): Mask for the decoder self-attention layers. Shape (B, M, M)
                 - mod_mask (torch.Tensor): An integer mask marking the modality type for each decoder token (with -1 indicating unassigned pad tokens). Shape (B, M)
         """
-        assert isinstance(target_mask, dict), "Traget mask must be a dictionary"
-        assert all(
-            key in self.decoder_embeddings for key in target_mask.keys()
-        ), "All keys in target mask must be in self.decoder_embeddings"
+        if target_mask is not None:
+            assert isinstance(target_mask, dict), "Target mask must be a dictionary"
+            assert all(
+                key in self.decoder_embeddings for key in target_mask.keys()
+            ), "All keys in target mask must be in self.decoder_embeddings"
+        elif target_dict is not None:
+            assert isinstance(target_dict, dict), "Target dict must be a dictionary"
+            assert all(
+                key in self.decoder_embeddings for key in target_dict.keys()
+            ), "All keys in target dict must be in self.decoder_embeddings"
+        else:
+            raise ValueError("Either target_mask or target_dict must be provided")
 
         device = next(self.parameters()).device
 
