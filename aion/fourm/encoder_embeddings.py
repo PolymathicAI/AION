@@ -419,4 +419,106 @@ class SequenceEmbEncoderEmbedding(nn.Module):
         d['x'] = x
         d['emb'] = x_emb
         return d
+
+
+class ContinuousImageTokenEncoderEmbedding(nn.Module):
+    """Embedding module for continuous tokenized spatial inputs.
+
+    Args:
+        data_dim: data dimensionality
+        patch_size: Int or tuple of the patch size over the full image size.
+        dim_tokens: Dimension of output tokens. Can be set using init method.
+        sincos_pos_emb: Set to True (default) to use fixed 2D sin-cos positional embeddings
+        image_size: Default image size. Used to initialize size of positional embeddings.
+    """
+
+    def __init__(
+        self,
+        data_dim: int,
+        patch_size: Union[int, Tuple[int, int]] = 16,
+        dim_tokens: Optional[int] = None,
+        sincos_pos_emb: bool = True,
+        image_size: Union[int, Tuple[int]] = 224,
+        **kwargs,
+    ):
+        super().__init__()
+        self.data_dim = data_dim
+        self.patch_size = pair(patch_size)
+        self.dim_tokens = dim_tokens
+        self.sincos_pos_emb = sincos_pos_emb
+        self.image_size = pair(image_size)
+        self.num_patches = (self.image_size[0] // patch_size) * (
+            self.image_size[1] // patch_size
+        )
+
+        if self.dim_tokens is not None:
+            self.init(dim_tokens=dim_tokens)
+
+    def init(self, dim_tokens: int = 768, init_std=0.02):
+        """
+        Initialize parts of module that are dependent on dimension of tokens.
+        Should be called when setting up FourM.
+
+        Args:
+            dim_tokens: Dimension of tokens
+            init_std: Standard deviation of init
+        """
+        self.dim_tokens = dim_tokens
+
+        # Task embedding identifying from which task a given token comes from
+        # Fixed-size positional embeddings. Can be interpolated to different input sizes
+        h_posemb = self.image_size[0] // self.patch_size[0]
+        w_posemb = self.image_size[1] // self.patch_size[1]
+        if self.sincos_pos_emb:
+            pos_emb = build_2d_sincos_posemb(
+                h=h_posemb, w=w_posemb, embed_dim=self.dim_tokens
+            )
+            self.register_buffer(
+                "pos_emb", pos_emb
+            )  # self.pos_emb is now a buffer for FSDP
+        else:
+            self.pos_emb = nn.Parameter(
+                torch.zeros(1, (h_posemb * w_posemb), self.dim_tokens)
+            )
+            nn.init.normal_(self.pos_emb, std=init_std)
+
+        self.mod_emb = nn.Parameter(torch.zeros(1, 1, self.dim_tokens))
+        nn.init.normal_(self.mod_emb, std=init_std)
+
+        # Token embedding
+        self.token_emb = nn.Linear(self.data_dim, self.dim_tokens)
+
+    @torch.jit.ignore
+    def no_weight_decay(self):
+        return set()
+
+    def forward(self, d: Dict[str, torch.Tensor]) -> Dict[str, torch.Tensor]:
+        """
+        Forward pass through embedding module, transforming image tokens to a sequence of embeddings.
+        Creates corresponding modality and positional embeddings and adds them to the dict.
+
+        Args:
+            d (Dict[str, torch.Tensor]): Modality dict with at least the following key:
+                - 'tensor' (torch.Tensor): Input image tokens for each batch. Shape (B, H, W, C) where B is the batch size, and H, W are height and width of the tokenized image.                - 'input_mask' (torch.Tensor): Mask for valid tokens in the input sequence (set to 0 for valid tokens and 1 otherwise). Shape (B, L).
+
+        Returns:
+            Dict[str, torch.Tensor]: Modality dictionary with added keys:
+                - 'x' (torch.Tensor): Embedded token sequence. Shape (B, H*W, D).
+                - 'emb' (torch.Tensor): Sum of positional and modality embeddings for the input sequence. Shape (B, H*W, D).
+        """
+        x = d["tensor"]
+        B, *spatial_dims, C = x.shape
+        x = x.reshape(B, -1, C)
+
+        # Map to embedding
+        x = self.token_emb(x)
+
+        # Create positional embedding + modality embedding
+        x_emb = repeat(self.pos_emb + self.mod_emb, "() n d -> b n d", b=B)
+
+        d["x"] = x
+        d["emb"] = x_emb
+
+        return d
+
     
