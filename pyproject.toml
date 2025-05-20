@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "aion"
 version = "0.0.1"
 description = "AstronomIcal Omnimodal Network"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dependencies = [
     "einops>=0.7.0",
     "huggingface_hub==0.24.7",
