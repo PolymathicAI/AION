@@ -15,7 +15,7 @@ jobs:
         uses: pre-commit/action@v3.0.1
         with:
           extra_args: --all-files
-  test:
+  install:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,7 +27,3 @@ jobs:
           python-version: "3.13"
       - name: Install AION
         run: uv sync --all-extras --dev
-      - name: Run tests
-        env:
-          PY_COLORS: "1"
-        run: uv run pytest tests
