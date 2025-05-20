@@ -9,19 +9,10 @@ description = "AstronomIcal Omnimodal Network"
 requires-python = ">=3.8"
 dependencies = [
     "torch>=2.4.0",
-    "diffusers==0.20.0",
     "einops>=0.7.0",
     "huggingface_hub==0.24.7",
     "tokenizers>=0.15.2",
-    "beartype>=0.18.0",
     "jaxtyping>=0.2.28",
-    "einx>=0.3.0",
-    "lightning[pytorch-extra]==2.2.5",
-    "python-dotenv>=1.0.1",
-    "wandb>=0.16.0",
-    "k-diffusion>=0.1.1",
-    "sep>=1.2.1",
-    "vector-quantize-pytorch==1.14.30",
 ]
 
 [project.optional-dependencies]
