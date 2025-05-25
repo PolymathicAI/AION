@@ -5,7 +5,7 @@ sys.path.insert(0, os.path.abspath(".."))
 
 project = "AION-1"
 author = "Polymathic AI"
-html_title = "AION-1"
+html_title = "AION"
 
 extensions = [
     "myst_parser",
@@ -13,6 +13,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.autosummary",
     "sphinx_design",  # For cards and grids
+    "sphinx_copybutton",
 ]
 
 autosummary_generate = True
