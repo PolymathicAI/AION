@@ -27,6 +27,11 @@ dev = [
     "pytest",
     "ruff",
 ]
+docs = [
+    "sphinx>=7.2",
+    "myst-parser",
+    "furo",
+]
 
 [tool.ruff.lint]
 # Ignore space in shape notation for jaxtyping
