@@ -29,7 +29,7 @@ def test_magvit_image_tokenizer(
     )
 
     encoded = tokenizer.encode(input_image_obj)
-    assert encoded.shape == (batch_size, 24, 24)
+    assert encoded.shape == (batch_size, 24 * 24)
 
     decoded_image_obj = tokenizer.decode(
         encoded, bands=["DES-G", "DES-R", "DES-I", "DES-Z"]
@@ -62,8 +62,17 @@ def test_hf_previous_predictions(data_dir):
             encoded_output, bands=["DES-G", "DES-R", "DES-I", "DES-Z"]
         )
 
+    # We flatten the reference encoded output to match the encoded output
+    # as we now make all codecs return flattened outputs
+    reference_encoded_output = reference_encoded_output.reshape(
+        reference_encoded_output.shape[0], -1
+    )
+
     assert encoded_output.shape == reference_encoded_output.shape
-    assert torch.allclose(encoded_output, reference_encoded_output)
+    assert torch.allclose(
+        encoded_output,
+        reference_encoded_output,
+    )
 
     assert isinstance(decoded_image_obj, Image)
     assert torch.allclose(

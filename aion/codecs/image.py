@@ -94,7 +94,7 @@ class AutoencoderImageCodec(Codec):
         )
         return x
 
-    def _encode(self, x: Image) -> Float[torch.Tensor, "b c1 w1 h1"]:
+    def _encode(self, x: Image) -> Float[torch.Tensor, "b c w*h"]:
         flux_tensor = x.flux
         bands_in = x.bands
 
@@ -112,11 +112,19 @@ class AutoencoderImageCodec(Codec):
 
         h = self.encoder(processed_flux)
         h = self.pre_quant_proj(h)
+
+        # Flatten the spatial dimensions
+        h = h.reshape(h.shape[0], h.shape[1], -1)
         return h
 
     def _decode(
-        self, z: Float[torch.Tensor, "b c1 w1 h1"], bands: Optional[List[str]] = None
+        self, z: Float[torch.Tensor, "b c w*h"], bands: Optional[List[str]] = None
     ) -> Image:
+        # z is flattened, need to reshape
+        batch_size, embedding_dim, n_tokens = z.shape
+        spatial_size = int(n_tokens**0.5)
+        z = z.reshape(batch_size, embedding_dim, spatial_size, spatial_size)
+
         h = self.post_quant_proj(z)
         decoded_flux_raw = self.decoder(h)
 
@@ -140,7 +148,7 @@ class AutoencoderImageCodec(Codec):
         return Image(flux=final_flux, bands=target_bands)
 
     def decode(
-        self, z: Float[Tensor, "b c1 *code_shape"], bands: Optional[List[str]] = None
+        self, z: Float[Tensor, "b c"], bands: Optional[List[str]] = None
     ) -> Image:
         """
         Decodes the given latent tensor `z` back into an Image object.

@@ -13,9 +13,9 @@ class Modality(BaseModel):
 
 
 class Image(Modality):
-    """Image modality data.
+    """Base class for image modality data.
 
-    Represents astronomical images with flux measurements, and band information.
+    This is an abstract base class. Use LegacySurveyImage or HSCImage instead.
     """
 
     flux: Float[Tensor, "batch num_bands height width"] = Field(
@@ -30,10 +30,22 @@ class Image(Modality):
         return repr_str
 
 
-class Spectrum(Modality):
-    """Spectrum modality data.
+class HSCImage(Image):
+    """HSC image modality data."""
 
-    Represents astronomical spectra with flux measurements, inverse variance, mask, and wavelength information.
+    token_key: ClassVar[str] = "tok_image_hsc"
+
+
+class LegacySurveyImage(Image):
+    """Legacy Survey image modality data."""
+
+    token_key: ClassVar[str] = "tok_image"
+
+
+class Spectrum(Modality):
+    """Base class for spectrum modality data.
+
+    This is an abstract base class. Use DESISpectrum or SDSSSpectrum instead.
     """
 
     flux: Float[Tensor, "batch length"] = Field(
@@ -54,13 +66,27 @@ class Spectrum(Modality):
         return repr_str
 
 
+class DESISpectrum(Spectrum):
+    """DESI spectrum modality data."""
+
+    token_key: ClassVar[str] = "tok_spectrum_desi"
+
+
+class SDSSSpectrum(Spectrum):
+    """SDSS spectrum modality data."""
+
+    token_key: ClassVar[str] = "tok_spectrum_sdss"
+
+
 # Catalog modality
-class Catalog(Modality):
+class LegacySurveyCatalog(Modality):
     """Catalog modality data.
 
     Represents a catalog of scalar values from the
     Legacy Survey.
     """
+
+    token_key: ClassVar[str] = "catalog"
 
     X: Int[Tensor, "batch n"] = Field(
         description="X position of the object in the image."
@@ -77,23 +103,24 @@ class Catalog(Modality):
     SHAPE_R: Float[Tensor, "batch n"] = Field(description="Size of the object.")
 
 
-class ScalarField(Modality):
-    """Scalar field modality data.
+class LegacySurveySegmentationMap(Modality):
+    """Legacy Survey segmentation map modality data.
 
-    Represents 2D scalar fields such as density maps, temperature maps,
-    or other continuous spatial distributions.
+    Represents 2D segmentation maps built from Legacy Survey detections.
     """
 
+    token_key: ClassVar[str] = "tok_segmap"
+
     field: Float[Tensor, "batch height width"] = Field(
-        description="2D scalar field data with spatial dimensions."
+        description="Segmentation map data with spatial dimensions."
     )
 
     def __repr__(self) -> str:
-        repr_str = f"ScalarField(field_shape={list(self.field.shape)})"
+        repr_str = f"LegacySurveySegmentationMap(field_shape={list(self.field.shape)})"
         return repr_str
 
 
-class ScalarModality(Modality):
+class Scalar(Modality):
     """Base class for scalar modality data.
 
     Represents a single scalar value per sample, typically used for
@@ -110,251 +137,287 @@ class ScalarModality(Modality):
 
 
 # Flux measurements in different bands
-class FluxG(ScalarModality):
-    """G-band flux measurement."""
+class LegacySurveyFluxG(Scalar):
+    """G-band flux measurement from Legacy Survey."""
 
     name: ClassVar[str] = "FLUX_G"
+    token_key: ClassVar[str] = "tok_flux_g"
 
 
-class FluxR(ScalarModality):
+class LegacySurveyFluxR(Scalar):
     """R-band flux measurement."""
 
     name: ClassVar[str] = "FLUX_R"
+    token_key: ClassVar[str] = "tok_flux_r"
 
 
-class FluxI(ScalarModality):
+class LegacySurveyFluxI(Scalar):
     """I-band flux measurement."""
 
     name: ClassVar[str] = "FLUX_I"
+    token_key: ClassVar[str] = "tok_flux_i"
 
 
-class FluxZ(ScalarModality):
+class LegacySurveyFluxZ(Scalar):
     """Z-band flux measurement."""
 
     name: ClassVar[str] = "FLUX_Z"
+    token_key: ClassVar[str] = "tok_flux_z"
 
 
-class FluxW1(ScalarModality):
+class LegacySurveyFluxW1(Scalar):
     """WISE W1-band flux measurement."""
 
     name: ClassVar[str] = "FLUX_W1"
+    token_key: ClassVar[str] = "tok_flux_w1"
 
 
-class FluxW2(ScalarModality):
+class LegacySurveyFluxW2(Scalar):
     """WISE W2-band flux measurement."""
 
     name: ClassVar[str] = "FLUX_W2"
+    token_key: ClassVar[str] = "tok_flux_w2"
 
 
-class FluxW3(ScalarModality):
+class LegacySurveyFluxW3(Scalar):
     """WISE W3-band flux measurement."""
 
     name: ClassVar[str] = "FLUX_W3"
+    token_key: ClassVar[str] = "tok_flux_w3"
 
 
-class FluxW4(ScalarModality):
+class LegacySurveyFluxW4(Scalar):
     """WISE W4-band flux measurement."""
 
     name: ClassVar[str] = "FLUX_W4"
+    token_key: ClassVar[str] = "tok_flux_w4"
 
 
 # Shape parameters
-class ShapeR(ScalarModality):
+class LegacySurveyShapeR(Scalar):
     """R-band shape measurement (e.g., half-light radius)."""
 
     name: ClassVar[str] = "SHAPE_R"
+    token_key: ClassVar[str] = "tok_shape_r"
 
 
-class ShapeE1(ScalarModality):
+class LegacySurveyShapeE1(Scalar):
     """First ellipticity component."""
 
     name: ClassVar[str] = "SHAPE_E1"
+    token_key: ClassVar[str] = "tok_shape_e1"
 
 
-class ShapeE2(ScalarModality):
+class LegacySurveyShapeE2(Scalar):
     """Second ellipticity component."""
 
     name: ClassVar[str] = "SHAPE_E2"
+    token_key: ClassVar[str] = "tok_shape_e2"
 
 
 # Other scalar properties
-class EBV(ScalarModality):
+class LegacySurveyEBV(Scalar):
     """E(B-V) extinction measurement."""
 
     name: ClassVar[str] = "EBV"
+    token_key: ClassVar[str] = "tok_ebv"
 
 
 # Spectroscopic redshift
-class Z(ScalarModality):
+class Z(Scalar):
     """Spectroscopic redshift measurement."""
 
     name: ClassVar[str] = "Z"
+    token_key: ClassVar[str] = "tok_z"
 
 
 # Extinction values from HSC
-class AG(ScalarModality):
+class HSCAG(Scalar):
     """HSC a_g extinction."""
 
     name: ClassVar[str] = "a_g"
+    token_key: ClassVar[str] = "tok_a_g"
 
 
-class AR(ScalarModality):
+class HSCAR(Scalar):
     """HSC a_r extinction."""
 
     name: ClassVar[str] = "a_r"
+    token_key: ClassVar[str] = "tok_a_r"
 
 
-class AI(ScalarModality):
+class HSCAI(Scalar):
     """HSC a_i extinction."""
 
     name: ClassVar[str] = "a_i"
+    token_key: ClassVar[str] = "tok_a_i"
 
 
-class AZ(ScalarModality):
+class HSCAZ(Scalar):
     """HSC a_z extinction."""
 
     name: ClassVar[str] = "a_z"
+    token_key: ClassVar[str] = "tok_a_z"
 
 
-class AY(ScalarModality):
+class HSCAY(Scalar):
     """HSC a_y extinction."""
 
     name: ClassVar[str] = "a_y"
+    token_key: ClassVar[str] = "tok_a_y"
 
 
-class MagG(ScalarModality):
+class HSCMagG(Scalar):
     """HSC g-band cmodel magnitude."""
 
     name: ClassVar[str] = "g_cmodel_mag"
+    token_key: ClassVar[str] = "tok_mag_g"
 
 
-class MagR(ScalarModality):
+class HSCMagR(Scalar):
     """HSC r-band cmodel magnitude."""
 
     name: ClassVar[str] = "r_cmodel_mag"
+    token_key: ClassVar[str] = "tok_mag_r"
 
 
-class MagI(ScalarModality):
+class HSCMagI(Scalar):
     """HSC i-band cmodel magnitude."""
 
     name: ClassVar[str] = "i_cmodel_mag"
+    token_key: ClassVar[str] = "tok_mag_i"
 
 
-class MagZ(ScalarModality):
+class HSCMagZ(Scalar):
     """HSC z-band cmodel magnitude."""
 
     name: ClassVar[str] = "z_cmodel_mag"
+    token_key: ClassVar[str] = "tok_mag_z"
 
 
-class MagY(ScalarModality):
+class HSCMagY(Scalar):
     """HSC y-band cmodel magnitude."""
 
     name: ClassVar[str] = "y_cmodel_mag"
+    token_key: ClassVar[str] = "tok_mag_y"
 
 
-class Shape11(ScalarModality):
+class HSCShape11(Scalar):
     """HSC i-band SDSS shape 11 component."""
 
     name: ClassVar[str] = "i_sdssshape_shape11"
+    token_key: ClassVar[str] = "tok_shape11"
 
 
-class Shape22(ScalarModality):
+class HSCShape22(Scalar):
     """HSC i-band SDSS shape 22 component."""
 
     name: ClassVar[str] = "i_sdssshape_shape22"
+    token_key: ClassVar[str] = "tok_shape22"
 
 
-class Shape12(ScalarModality):
+class HSCShape12(Scalar):
     """HSC i-band SDSS shape 12 component."""
 
     name: ClassVar[str] = "i_sdssshape_shape12"
+    token_key: ClassVar[str] = "tok_shape12"
 
 
 # Gaia modalities
-class FluxGGaia(ScalarModality):
+class GaiaFluxG(Scalar):
     """Gaia G-band mean flux."""
 
     name: ClassVar[str] = "phot_g_mean_flux"
+    token_key: ClassVar[str] = "tok_flux_g_gaia"
 
 
-class FluxBpGaia(ScalarModality):
+class GaiaFluxBp(Scalar):
     """Gaia BP-band mean flux."""
 
     name: ClassVar[str] = "phot_bp_mean_flux"
+    token_key: ClassVar[str] = "tok_flux_bp_gaia"
 
 
-class FluxRpGaia(ScalarModality):
+class GaiaFluxRp(Scalar):
     """Gaia RP-band mean flux."""
 
     name: ClassVar[str] = "phot_rp_mean_flux"
+    token_key: ClassVar[str] = "tok_flux_rp_gaia"
 
 
-class Parallax(ScalarModality):
+class GaiaParallax(Scalar):
     """Gaia parallax measurement."""
 
     name: ClassVar[str] = "parallax"
+    token_key: ClassVar[str] = "tok_parallax"
 
 
-class Ra(ScalarModality):
+class Ra(Scalar):
     """Right ascension coordinate."""
 
     name: ClassVar[str] = "ra"
+    token_key: ClassVar[str] = "tok_ra"
 
 
-class Dec(ScalarModality):
+class Dec(Scalar):
     """Declination coordinate."""
 
     name: ClassVar[str] = "dec"
+    token_key: ClassVar[str] = "tok_dec"
 
 
-class XpBp(ScalarModality):
+class GaiaXpBp(Scalar):
     """Gaia BP spectral coefficients."""
 
     name: ClassVar[str] = "bp_coefficients"
+    token_key: ClassVar[str] = "tok_xp_bp"
 
 
-class XpRp(ScalarModality):
+class GaiaXpRp(Scalar):
     """Gaia RP spectral coefficients."""
 
     name: ClassVar[str] = "rp_coefficients"
+    token_key: ClassVar[str] = "tok_xp_rp"
 
 
 ScalarModalities = [
-    FluxG,
-    FluxR,
-    FluxI,
-    FluxZ,
-    FluxW1,
-    FluxW2,
-    FluxW3,
-    FluxW4,
-    ShapeR,
-    ShapeE1,
-    ShapeE2,
-    EBV,
+    LegacySurveyFluxG,
+    LegacySurveyFluxR,
+    LegacySurveyFluxI,
+    LegacySurveyFluxZ,
+    LegacySurveyFluxW1,
+    LegacySurveyFluxW2,
+    LegacySurveyFluxW3,
+    LegacySurveyFluxW4,
+    LegacySurveyShapeR,
+    LegacySurveyShapeE1,
+    LegacySurveyShapeE2,
+    LegacySurveyEBV,
     Z,
-    AG,
-    AR,
-    AI,
-    AZ,
-    AY,
-    MagG,
-    MagR,
-    MagI,
-    MagZ,
-    MagY,
-    Shape11,
-    Shape22,
-    Shape12,
-    FluxGGaia,
-    FluxBpGaia,
-    FluxRpGaia,
-    Parallax,
+    HSCAG,
+    HSCAR,
+    HSCAI,
+    HSCAZ,
+    HSCAY,
+    HSCMagG,
+    HSCMagR,
+    HSCMagI,
+    HSCMagZ,
+    HSCMagY,
+    HSCShape11,
+    HSCShape22,
+    HSCShape12,
+    GaiaFluxG,
+    GaiaFluxBp,
+    GaiaFluxRp,
+    GaiaParallax,
     Ra,
     Dec,
-    XpBp,
-    XpRp,
+    GaiaXpBp,
+    GaiaXpRp,
 ]
 
 # Convenience type for any modality data
-ModalityType = Union[Image, Spectrum, ScalarModality, Catalog, ScalarField]
+ModalityType = Union[
+    Image, Spectrum, Scalar, LegacySurveyCatalog, LegacySurveySegmentationMap
+]

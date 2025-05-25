@@ -1,7 +1,7 @@
 import torch
 
 from aion.codecs import CatalogCodec
-from aion.modalities import Catalog
+from aion.modalities import LegacySurveyCatalog
 
 
 def test_catalog_tokenizer(data_dir):
@@ -18,7 +18,7 @@ def test_catalog_tokenizer(data_dir):
     )
 
     with torch.no_grad():
-        output = codec.encode(Catalog(**input_batch))
+        output = codec.encode(LegacySurveyCatalog(**input_batch))
         decoded_output = codec.decode(output)
 
     assert torch.allclose(output, reference_encoded_batch)

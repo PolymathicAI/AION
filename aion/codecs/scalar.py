@@ -11,7 +11,7 @@ from aion.codecs.quantizers.scalar import (
     MultiScalarCompressedReservoirQuantizer,
 )
 from aion.codecs.base import Codec
-from aion.modalities import ScalarModality, ScalarModalities
+from aion.modalities import Scalar, ScalarModalities
 
 
 class BaseScalarIdentityCodec(Codec, PyTorchModelHubMixin):
@@ -32,15 +32,15 @@ class BaseScalarIdentityCodec(Codec, PyTorchModelHubMixin):
         return self._quantizer
 
     @property
-    def modality(self) -> Type[ScalarModality]:
+    def modality(self) -> Type[Scalar]:
         return self._modality_class
 
-    def _encode(self, x: ScalarModality) -> Float[Tensor, " b"]:
+    def _encode(self, x: Scalar) -> Float[Tensor, " b"]:
         return x.value
 
     def _decode(
         self, z: Float[Tensor, " b"], **metadata: Optional[Dict[str, Any]]
-    ) -> ScalarModality:
+    ) -> Scalar:
         return self._modality_class(value=z)
 
     def load_state_dict(self, state_dict, strict=True):

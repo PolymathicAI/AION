@@ -1,7 +1,7 @@
 import torch
 
 from aion.codecs import ScalarFieldCodec
-from aion.modalities import ScalarField
+from aion.modalities import LegacySurveySegmentationMap
 
 
 def test_scalar_field_tokenizer(data_dir):
@@ -17,8 +17,14 @@ def test_scalar_field_tokenizer(data_dir):
         data_dir / "scalar-field_codec_decoded_batch.pt", weights_only=False
     )
 
+    # We flatten the reference encoded output to match the encoded output
+    # as we now make all codecs return flattened outputs
+    reference_encoded_batch = reference_encoded_batch.reshape(
+        reference_encoded_batch.shape[0], -1
+    )
+
     with torch.no_grad():
-        output = codec.encode(ScalarField(field=input_batch))
+        output = codec.encode(LegacySurveySegmentationMap(field=input_batch))
         decoded_output = codec.decode(output)
 
     assert torch.allclose(output, reference_encoded_batch)

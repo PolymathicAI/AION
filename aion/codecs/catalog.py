@@ -13,7 +13,7 @@ from aion.codecs.quantizers.scalar import (
     IdentityQuantizer,
     ScalarReservoirQuantizer,
 )
-from aion.modalities import Catalog
+from aion.modalities import LegacySurveyCatalog
 
 
 class CatalogCodec(Codec, PyTorchModelHubMixin):
@@ -28,7 +28,7 @@ class CatalogCodec(Codec, PyTorchModelHubMixin):
         mask_value: int = 9999,
     ):
         super().__init__()
-        self._modality = Catalog
+        self._modality = LegacySurveyCatalog
         catalog_keys = ["X", "Y", "SHAPE_E1", "SHAPE_E2", "SHAPE_R"]
         quantizers = [
             IdentityQuantizer(96),
@@ -48,14 +48,14 @@ class CatalogCodec(Codec, PyTorchModelHubMixin):
         self._quantizer = ComposedScalarQuantizer(_quantizer)
 
     @property
-    def modality(self) -> Type[Catalog]:
+    def modality(self) -> Type[LegacySurveyCatalog]:
         return self._modality
 
     @property
     def quantizer(self) -> Optional[Quantizer]:
         return self._quantizer
 
-    def _encode(self, x: Catalog) -> Dict[str, Tensor]:
+    def _encode(self, x: LegacySurveyCatalog) -> Dict[str, Tensor]:
         encoded = OrderedDict()
         for key in self._catalog_keys:
             catalog_value = getattr(x, key)
@@ -65,7 +65,7 @@ class CatalogCodec(Codec, PyTorchModelHubMixin):
         encoded["mask"] = mask
         return encoded
 
-    def encode(self, x: Catalog) -> Float[Tensor, "b c1 *code_shape"]:
+    def encode(self, x: LegacySurveyCatalog) -> Float[Tensor, "b c1 *code_shape"]:
         """Encodes a given batch of samples into latent space."""
         embedding = self._encode(x)
         _encoded = self.quantizer.encode(
@@ -83,10 +83,10 @@ class CatalogCodec(Codec, PyTorchModelHubMixin):
         encoded = encoded.reshape(B, -1)
         return encoded
 
-    def _decode(self, z: Dict[str, Tensor]) -> Catalog:
-        return Catalog(**z)
+    def _decode(self, z: Dict[str, Tensor]) -> LegacySurveyCatalog:
+        return LegacySurveyCatalog(**z)
 
-    def decode(self, z: Float[Tensor, "b c1 *code_shape"]) -> Catalog:
+    def decode(self, z: Float[Tensor, "b c1 *code_shape"]) -> LegacySurveyCatalog:
         B, LC = z.shape
         C = len(self._catalog_keys)
         L = LC // C

@@ -25,7 +25,7 @@ class Codec(ABC, torch.nn.Module):
         raise NotImplementedError
 
     @abstractmethod
-    def _encode(self, x: ModalityType) -> Float[Tensor, "b c1 *code_shape"]:
+    def _encode(self, x: ModalityType) -> Float[Tensor, "b c n_tokens"]:
         """Function to be implemented by subclasses which
         takes a batch of input samples (as a ModalityType instance)
         and embeds it into a latent space, before any quantization.
@@ -34,7 +34,7 @@ class Codec(ABC, torch.nn.Module):
 
     @abstractmethod
     def _decode(
-        self, z: Float[Tensor, "b c1 *code_shape"], **metadata: Optional[Dict[str, Any]]
+        self, z: Float[Tensor, "b c n_tokens"], **metadata: Optional[Dict[str, Any]]
     ) -> ModalityType:
         """Function to be implemented by subclasses which
         takes a batch of latent space embeddings (after dequantization)
@@ -54,7 +54,7 @@ class Codec(ABC, torch.nn.Module):
         """Returns the quantizer."""
         raise NotImplementedError
 
-    def encode(self, x: ModalityType) -> Float[Tensor, "b c1 *code_shape"]:
+    def encode(self, x: ModalityType) -> Float[Tensor, "b n_tokens"]:
         """Encodes a given batch of samples into latent space.
         Encodes a batch of input samples into quantized discrete tokens.
 
@@ -77,7 +77,7 @@ class Codec(ABC, torch.nn.Module):
         return self.quantizer.encode(embedding)
 
     def decode(
-        self, z: Float[Tensor, "b c1 *code_shape"], **metadata: Optional[Dict[str, Any]]
+        self, z: Float[Tensor, "b n_tokens"], **metadata: Optional[Dict[str, Any]]
     ) -> ModalityType:
         """Decodes a batch of quantized discrete tokens back into the original data space.
 
