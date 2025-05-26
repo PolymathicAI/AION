@@ -9,11 +9,12 @@ html_title = "AION"
 
 extensions = [
     "myst_parser",
-    "sphinx.ext.autodoc",
-    "sphinx.ext.napoleon",
-    "sphinx.ext.autosummary",
-    "sphinx_design",  # For cards and grids
     "sphinx_copybutton",
+    "sphinx_design",  # For cards and grids
+    "sphinx_mermaid",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.napoleon",
 ]
 
 autosummary_generate = True
