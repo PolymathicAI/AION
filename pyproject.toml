@@ -28,9 +28,11 @@ dev = [
     "ruff",
 ]
 docs = [
-    "sphinx>=7.2",
-    "myst-parser",
     "furo",
+    "myst-parser>=1.0",
+    "sphinx-copybutton",
+    "sphinx-design",
+    "sphinx>=7.2",
 ]
 
 [tool.ruff.lint]
