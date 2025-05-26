@@ -42,7 +42,6 @@ from aion.modalities import (
     LegacySurveyFluxW3,
     LegacySurveyFluxW4,
     LegacySurveyFluxZ,
-    LegacySurveyImage,
     LegacySurveySegmentationMap,
     LegacySurveyShapeE1,
     LegacySurveyShapeE2,
@@ -54,10 +53,6 @@ from aion.modalities import (
 
 CODEC_CONFIG = {
     Image: {
-        "class": ImageCodec,
-        "repo_id": "polymathic-ai/aion-image-codec",
-    },
-    LegacySurveyImage: {
         "class": ImageCodec,
         "repo_id": "polymathic-ai/aion-image-codec",
     },
