@@ -32,4 +32,5 @@ jobs:
       - name: Run tests
         env:
           HF_TOKEN: ${{ secrets.AION_HF_TOKEN }}
+          PY_COLORS: "1"
         run: uv run pytest tests
