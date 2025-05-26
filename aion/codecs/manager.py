@@ -3,12 +3,21 @@
 Handles dynamic loading and management of codecs for different modalities.
 """
 
-from typing import Dict, Union, Optional, Type
+from typing import Dict, Optional, Type, Union
+
 import torch
 
-from aion.modalities import Modality
 from aion.codecs.base import Codec
 from aion.codecs.config import CODEC_CONFIG
+from aion.modalities import Modality
+
+
+class ModalityTypeError(TypeError):
+    """Error raised when a modality type is not supported."""
+
+
+class TokenKeyError(ValueError):
+    """Error raised when a token key is not found in the tokens dictionary."""
 
 
 class CodecManager:
@@ -53,7 +62,7 @@ class CodecManager:
             ):
                 config = CODEC_CONFIG[modality_type.__base__]
             else:
-                raise ValueError(
+                raise ModalityTypeError(
                     f"No codec configuration found for modality type: {modality_type.__name__}"
                 )
         else:
@@ -99,7 +108,7 @@ class CodecManager:
             if hasattr(modality, "token_key"):
                 token_key = modality.token_key
             else:
-                raise ValueError(
+                raise ModalityTypeError(
                     f"Modality {type(modality).__name__} does not have a token_key attribute"
                 )
 
@@ -130,7 +139,7 @@ class CodecManager:
             # Token key provided
             token_key = modality_or_token_key
             if token_key not in tokens:
-                raise ValueError(
+                raise TokenKeyError(
                     f"Token key '{token_key}' not found in tokens dictionary"
                 )
 
@@ -142,18 +151,20 @@ class CodecManager:
                     break
 
             if modality_type is None:
-                raise ValueError(f"No modality type found for token key '{token_key}'")
+                raise TokenKeyError(
+                    f"No modality type found for token key '{token_key}'"
+                )
         else:
             # Modality type provided
             modality_type = modality_or_token_key
             if not hasattr(modality_type, "token_key"):
-                raise ValueError(
+                raise ModalityTypeError(
                     f"Modality type {modality_type.__name__} does not have a token_key attribute"
                 )
 
             token_key = modality_type.token_key
             if token_key not in tokens:
-                raise ValueError(
+                raise TokenKeyError(
                     f"Token key '{token_key}' for modality {modality_type.__name__} not found in tokens dictionary"
                 )
 

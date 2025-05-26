@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 import torch
 
-from aion.codecs.manager import CodecManager
+from aion.codecs.manager import CodecManager, ModalityTypeError, TokenKeyError
 from aion.modalities import (
     DESISpectrum,
     LegacySurveyFluxG,
@@ -104,17 +104,17 @@ class TestCodecManager:
         class InvalidModality:
             pass
 
-        with pytest.raises(ValueError, match="No codec configuration found"):
+        with pytest.raises(ModalityTypeError):
             manager._load_codec(InvalidModality)
 
         # Test decoding with missing token key
         tokens = {"tok_flux_g": torch.randn(4, 10)}
 
-        with pytest.raises(ValueError, match="Token key .* not found"):
+        with pytest.raises(TokenKeyError):
             manager.decode(tokens, "tok_missing")
 
         # Test decoding with invalid token key
-        with pytest.raises(ValueError, match="No modality type found for token key"):
+        with pytest.raises(TokenKeyError):
             manager.decode(tokens, "invalid_token_key")
 
     @pytest.mark.parametrize("batch_size", [1, 4, 16])
