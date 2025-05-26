@@ -24,13 +24,11 @@ jobs:
     - name: Install dependencies
       run: |
         uv sync --all-extras --dev
-
     - name: Build documentation
       run: |
         cd docs
-        sphinx-build -W -b html . _build/html
-
+        uv run sphinx-build -W -b html . _build/html
     - name: Check for broken links
       run: |
         cd docs
-        sphinx-build -b linkcheck . _build/linkcheck || true
+        uv run sphinx-build -b linkcheck . _build/linkcheck || true
