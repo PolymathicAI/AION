@@ -11,7 +11,7 @@ extensions = [
     "myst_parser",
     "sphinx_copybutton",
     "sphinx_design",  # For cards and grids
-    "sphinx_mermaid",
+    "sphinxcontrib.mermaid",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.napoleon",
