@@ -76,6 +76,7 @@ class CodecManager:
 
         return codec
 
+    @torch.no_grad()
     def encode(self, *modalities: Modality) -> Dict[str, torch.Tensor]:
         """Encode multiple modalities.
 
@@ -106,6 +107,7 @@ class CodecManager:
 
         return tokens
 
+    @torch.no_grad()
     def decode(
         self,
         tokens: Dict[str, torch.Tensor],
