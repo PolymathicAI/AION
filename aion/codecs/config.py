@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from dataclasses import dataclass
 
 from aion.codecs.base import Codec
 from aion.codecs.catalog import CatalogCodec
@@ -53,7 +53,8 @@ from aion.modalities import (
 )
 
 
-class CodecHFConfig(BaseModel):
+@dataclass
+class CodecHFConfig:
     """Codec configuration for AION."""
 
     codec_class: Codec

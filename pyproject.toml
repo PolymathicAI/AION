@@ -14,7 +14,6 @@ dependencies = [
     "numpy",
     "scipy",
     "tokenizers>=0.15.2",
-    "pydantic>=2.10.6",
 ]
 
 [project.optional-dependencies]

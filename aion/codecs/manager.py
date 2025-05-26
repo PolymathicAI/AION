@@ -150,6 +150,6 @@ class CodecManager:
         decoded_modality = codec.decode(tokens[token_key], **metadata)
 
         # Cast decoded modality to the correct type
-        decoded_modality = modality_type(**decoded_modality.model_dump())
+        decoded_modality = modality_type(**decoded_modality.as_dict())
 
         return decoded_modality
