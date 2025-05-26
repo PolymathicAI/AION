@@ -131,6 +131,7 @@ class CodecManager:
 
         # Get the appropriate codec
         codec = self._load_codec(modality_type)
+        codec = codec.to(self.device)
 
         # Decode using the codec with any provided metadata
         decoded_modality = codec.decode(tokens[token_key], **metadata)
