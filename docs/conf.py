@@ -26,6 +26,8 @@ myst_enable_extensions = [
     "html_image",
 ]
 
+myst_heading_anchors = 3
+
 html_theme = "furo"
 html_static_path = ["_static"]
 html_css_files = ["style.css"]
