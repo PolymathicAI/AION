@@ -146,7 +146,6 @@ installation
 architecture
 usage
 api
-contributing
 ```
 
 ## 🤝 Join the Community

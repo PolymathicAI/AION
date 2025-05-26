@@ -681,7 +681,7 @@ except CodecError as e:
 3. **Token Caching**: Reuse encoder outputs when generating multiple targets
 4. **Device Placement**: Use `.to(device)` consistently for all tensors
 
-For more details, see the [Usage Guide](usage.html) and [Architecture](architecture.html) documentation.
+For more details, see the [Usage Guide](usage.md) and [Architecture](architecture.md) documentation.
 
 ```{eval-rst}
 .. automodule:: aion
