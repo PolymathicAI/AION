@@ -68,13 +68,13 @@ class CodecManager:
         else:
             config = CODEC_CONFIG[modality_type]
 
-        repo_id = config["repo_id"]
+        repo_id = config.repo_id
 
         # Check if this codec has already been loaded (shared codec case)
         if repo_id in self._codecs:
             return self._codecs[repo_id]
 
-        codec_class = config["class"]
+        codec_class = config.codec_class
 
         # Load from HuggingFace
         codec = codec_class.from_pretrained(repo_id, cache_dir=self.cache_dir)
