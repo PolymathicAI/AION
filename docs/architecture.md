@@ -50,7 +50,7 @@ AION-1's image tokenizer handles multi-band astronomical images from different s
 - Dynamic range
 
 #### Architecture
-```python
+```
 # Image tokenizer structure
 class ImageCodec:
     - Preprocessing:
@@ -92,7 +92,7 @@ Astronomical spectra present unique challenges:
 - Orders of magnitude variation in amplitude
 
 #### Architecture
-```python
+```
 # Spectrum tokenizer structure
 class SpectrumCodec:
     - Preprocessing:
@@ -155,7 +155,7 @@ These numbers correspond to the default configuration used during pre-training (
 
 Astronomical catalogs contain lists of objects with varying counts per image. AION-1 linearizes these into sequences:
 
-```python
+```
 # Catalog entry: (X, Y, e1, e2, radius)
 # Linearization: Sort by distance from center
 # Tokenization: Quantize each component separately
@@ -167,7 +167,7 @@ The second stage uses a transformer encoder-decoder architecture to learn relati
 
 ### Architecture Details
 
-```python
+```
 class AION(FourM):
     # Encoder
     - Depth: 12-24 layers (model-dependent)
