@@ -236,7 +236,7 @@ All models use:
 
 Here's how data flows through the complete pipeline:
 
-```mermaid
+```{mermaid}
 graph TD
     A[Raw Astronomical Data] --> B[Modality-Specific Preprocessing]
     B --> C[Tokenization]
