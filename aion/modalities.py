@@ -56,6 +56,13 @@ class Modality(ABC):
 
 
 @dataclass
+class TokenModality(Modality):
+    """Base class for all token modalities."""
+
+    token_key: str = ""
+
+
+@dataclass
 class Image(Modality):
     """Base class for image modality data.
 
@@ -71,14 +78,14 @@ class Image(Modality):
 
 
 @dataclass
-class HSCImage(Image):
+class HSCImage(Image, TokenModality):
     """HSC image modality data."""
 
     token_key: str = field(init=False, default="tok_image_hsc")
 
 
 @dataclass
-class LegacySurveyImage(Image):
+class LegacySurveyImage(Image, TokenModality):
     """Legacy Survey image modality data."""
 
     token_key: str = field(init=False, default="tok_image")
@@ -106,14 +113,14 @@ class Spectrum(Modality):
 
 
 @dataclass
-class DESISpectrum(Spectrum):
+class DESISpectrum(Spectrum, TokenModality):
     """DESI spectrum modality data."""
 
     token_key: str = field(init=False, default="tok_spectrum_desi")
 
 
 @dataclass
-class SDSSSpectrum(Spectrum):
+class SDSSSpectrum(Spectrum, TokenModality):
     """SDSS spectrum modality data."""
 
     token_key: str = field(init=False, default="tok_spectrum_sdss")
@@ -121,7 +128,7 @@ class SDSSSpectrum(Spectrum):
 
 # Catalog modality
 @dataclass
-class LegacySurveyCatalog(Modality):
+class LegacySurveyCatalog(TokenModality):
     """Catalog modality data.
 
     Represents a catalog of scalar values from the Legacy Survey.
@@ -136,7 +143,7 @@ class LegacySurveyCatalog(Modality):
 
 
 @dataclass
-class LegacySurveySegmentationMap(Modality):
+class LegacySurveySegmentationMap(TokenModality):
     """Legacy Survey segmentation map modality data.
 
     Represents 2D segmentation maps built from Legacy Survey detections.
@@ -166,7 +173,7 @@ class Scalar(Modality):
 
 # Flux measurements in different bands
 @dataclass
-class LegacySurveyFluxG(Scalar):
+class LegacySurveyFluxG(Scalar, TokenModality):
     """G-band flux measurement from Legacy Survey."""
 
     name: str = field(init=False, default="FLUX_G")
@@ -174,7 +181,7 @@ class LegacySurveyFluxG(Scalar):
 
 
 @dataclass
-class LegacySurveyFluxR(Scalar):
+class LegacySurveyFluxR(Scalar, TokenModality):
     """R-band flux measurement."""
 
     name: str = field(init=False, default="FLUX_R")
@@ -182,7 +189,7 @@ class LegacySurveyFluxR(Scalar):
 
 
 @dataclass
-class LegacySurveyFluxI(Scalar):
+class LegacySurveyFluxI(Scalar, TokenModality):
     """I-band flux measurement."""
 
     name: str = field(init=False, default="FLUX_I")
@@ -190,7 +197,7 @@ class LegacySurveyFluxI(Scalar):
 
 
 @dataclass
-class LegacySurveyFluxZ(Scalar):
+class LegacySurveyFluxZ(Scalar, TokenModality):
     """Z-band flux measurement."""
 
     name: str = field(init=False, default="FLUX_Z")
@@ -198,7 +205,7 @@ class LegacySurveyFluxZ(Scalar):
 
 
 @dataclass
-class LegacySurveyFluxW1(Scalar):
+class LegacySurveyFluxW1(Scalar, TokenModality):
     """WISE W1-band flux measurement."""
 
     name: str = field(init=False, default="FLUX_W1")
@@ -206,7 +213,7 @@ class LegacySurveyFluxW1(Scalar):
 
 
 @dataclass
-class LegacySurveyFluxW2(Scalar):
+class LegacySurveyFluxW2(Scalar, TokenModality):
     """WISE W2-band flux measurement."""
 
     name: str = field(init=False, default="FLUX_W2")
@@ -214,7 +221,7 @@ class LegacySurveyFluxW2(Scalar):
 
 
 @dataclass
-class LegacySurveyFluxW3(Scalar):
+class LegacySurveyFluxW3(Scalar, TokenModality):
     """WISE W3-band flux measurement."""
 
     name: str = field(init=False, default="FLUX_W3")
@@ -222,7 +229,7 @@ class LegacySurveyFluxW3(Scalar):
 
 
 @dataclass
-class LegacySurveyFluxW4(Scalar):
+class LegacySurveyFluxW4(Scalar, TokenModality):
     """WISE W4-band flux measurement."""
 
     name: str = field(init=False, default="FLUX_W4")
@@ -231,7 +238,7 @@ class LegacySurveyFluxW4(Scalar):
 
 # Shape parameters
 @dataclass
-class LegacySurveyShapeR(Scalar):
+class LegacySurveyShapeR(Scalar, TokenModality):
     """R-band shape measurement (e.g., half-light radius)."""
 
     name: str = field(init=False, default="SHAPE_R")
@@ -239,7 +246,7 @@ class LegacySurveyShapeR(Scalar):
 
 
 @dataclass
-class LegacySurveyShapeE1(Scalar):
+class LegacySurveyShapeE1(Scalar, TokenModality):
     """First ellipticity component."""
 
     name: str = field(init=False, default="SHAPE_E1")
@@ -247,7 +254,7 @@ class LegacySurveyShapeE1(Scalar):
 
 
 @dataclass
-class LegacySurveyShapeE2(Scalar):
+class LegacySurveyShapeE2(Scalar, TokenModality):
     """Second ellipticity component."""
 
     name: str = field(init=False, default="SHAPE_E2")
@@ -256,7 +263,7 @@ class LegacySurveyShapeE2(Scalar):
 
 # Other scalar properties
 @dataclass
-class LegacySurveyEBV(Scalar):
+class LegacySurveyEBV(Scalar, TokenModality):
     """E(B-V) extinction measurement."""
 
     name: str = field(init=False, default="EBV")
@@ -265,7 +272,7 @@ class LegacySurveyEBV(Scalar):
 
 # Spectroscopic redshift
 @dataclass
-class Z(Scalar):
+class Z(Scalar, TokenModality):
     """Spectroscopic redshift measurement."""
 
     name: str = field(init=False, default="Z")
@@ -274,7 +281,7 @@ class Z(Scalar):
 
 # Extinction values from HSC
 @dataclass
-class HSCAG(Scalar):
+class HSCAG(Scalar, TokenModality):
     """HSC a_g extinction."""
 
     name: str = field(init=False, default="a_g")
@@ -282,7 +289,7 @@ class HSCAG(Scalar):
 
 
 @dataclass
-class HSCAR(Scalar):
+class HSCAR(Scalar, TokenModality):
     """HSC a_r extinction."""
 
     name: str = field(init=False, default="a_r")
@@ -290,7 +297,7 @@ class HSCAR(Scalar):
 
 
 @dataclass
-class HSCAI(Scalar):
+class HSCAI(Scalar, TokenModality):
     """HSC a_i extinction."""
 
     name: str = field(init=False, default="a_i")
@@ -298,7 +305,7 @@ class HSCAI(Scalar):
 
 
 @dataclass
-class HSCAZ(Scalar):
+class HSCAZ(Scalar, TokenModality):
     """HSC a_z extinction."""
 
     name: str = field(init=False, default="a_z")
@@ -306,7 +313,7 @@ class HSCAZ(Scalar):
 
 
 @dataclass
-class HSCAY(Scalar):
+class HSCAY(Scalar, TokenModality):
     """HSC a_y extinction."""
 
     name: str = field(init=False, default="a_y")
@@ -314,7 +321,7 @@ class HSCAY(Scalar):
 
 
 @dataclass
-class HSCMagG(Scalar):
+class HSCMagG(Scalar, TokenModality):
     """HSC g-band cmodel magnitude."""
 
     name: str = field(init=False, default="g_cmodel_mag")
@@ -322,7 +329,7 @@ class HSCMagG(Scalar):
 
 
 @dataclass
-class HSCMagR(Scalar):
+class HSCMagR(Scalar, TokenModality):
     """HSC r-band cmodel magnitude."""
 
     name: str = field(init=False, default="r_cmodel_mag")
@@ -330,7 +337,7 @@ class HSCMagR(Scalar):
 
 
 @dataclass
-class HSCMagI(Scalar):
+class HSCMagI(Scalar, TokenModality):
     """HSC i-band cmodel magnitude."""
 
     name: str = field(init=False, default="i_cmodel_mag")
@@ -338,7 +345,7 @@ class HSCMagI(Scalar):
 
 
 @dataclass
-class HSCMagZ(Scalar):
+class HSCMagZ(Scalar, TokenModality):
     """HSC z-band cmodel magnitude."""
 
     name: str = field(init=False, default="z_cmodel_mag")
@@ -346,7 +353,7 @@ class HSCMagZ(Scalar):
 
 
 @dataclass
-class HSCMagY(Scalar):
+class HSCMagY(Scalar, TokenModality):
     """HSC y-band cmodel magnitude."""
 
     name: str = field(init=False, default="y_cmodel_mag")
@@ -354,7 +361,7 @@ class HSCMagY(Scalar):
 
 
 @dataclass
-class HSCShape11(Scalar):
+class HSCShape11(Scalar, TokenModality):
     """HSC i-band SDSS shape 11 component."""
 
     name: str = field(init=False, default="i_sdssshape_shape11")
@@ -362,7 +369,7 @@ class HSCShape11(Scalar):
 
 
 @dataclass
-class HSCShape22(Scalar):
+class HSCShape22(Scalar, TokenModality):
     """HSC i-band SDSS shape 22 component."""
 
     name: str = field(init=False, default="i_sdssshape_shape22")
@@ -370,7 +377,7 @@ class HSCShape22(Scalar):
 
 
 @dataclass
-class HSCShape12(Scalar):
+class HSCShape12(Scalar, TokenModality):
     """HSC i-band SDSS shape 12 component."""
 
     name: str = field(init=False, default="i_sdssshape_shape12")
@@ -379,7 +386,7 @@ class HSCShape12(Scalar):
 
 # Gaia modalities
 @dataclass
-class GaiaFluxG(Scalar):
+class GaiaFluxG(Scalar, TokenModality):
     """Gaia G-band mean flux."""
 
     name: str = field(init=False, default="phot_g_mean_flux")
@@ -387,7 +394,7 @@ class GaiaFluxG(Scalar):
 
 
 @dataclass
-class GaiaFluxBp(Scalar):
+class GaiaFluxBp(Scalar, TokenModality):
     """Gaia BP-band mean flux."""
 
     name: str = field(init=False, default="phot_bp_mean_flux")
@@ -395,7 +402,7 @@ class GaiaFluxBp(Scalar):
 
 
 @dataclass
-class GaiaFluxRp(Scalar):
+class GaiaFluxRp(Scalar, TokenModality):
     """Gaia RP-band mean flux."""
 
     name: str = field(init=False, default="phot_rp_mean_flux")
@@ -403,7 +410,7 @@ class GaiaFluxRp(Scalar):
 
 
 @dataclass
-class GaiaParallax(Scalar):
+class GaiaParallax(Scalar, TokenModality):
     """Gaia parallax measurement."""
 
     name: str = field(init=False, default="parallax")
@@ -411,7 +418,7 @@ class GaiaParallax(Scalar):
 
 
 @dataclass
-class Ra(Scalar):
+class Ra(Scalar, TokenModality):
     """Right ascension coordinate."""
 
     name: str = field(init=False, default="ra")
@@ -419,7 +426,7 @@ class Ra(Scalar):
 
 
 @dataclass
-class Dec(Scalar):
+class Dec(Scalar, TokenModality):
     """Declination coordinate."""
 
     name: str = field(init=False, default="dec")
@@ -427,7 +434,7 @@ class Dec(Scalar):
 
 
 @dataclass
-class GaiaXpBp(Scalar):
+class GaiaXpBp(Scalar, TokenModality):
     """Gaia BP spectral coefficients."""
 
     name: str = field(init=False, default="bp_coefficients")
@@ -435,7 +442,7 @@ class GaiaXpBp(Scalar):
 
 
 @dataclass
-class GaiaXpRp(Scalar):
+class GaiaXpRp(Scalar, TokenModality):
     """Gaia RP spectral coefficients."""
 
     name: str = field(init=False, default="rp_coefficients")

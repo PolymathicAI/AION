@@ -9,7 +9,7 @@ import torch
 
 from aion.codecs.base import Codec
 from aion.codecs.config import CODEC_CONFIG, CodecType
-from aion.modalities import Modality
+from aion.modalities import Modality, TokenModality
 
 
 class ModalityTypeError(TypeError):
@@ -73,7 +73,7 @@ class CodecManager:
         return codec
 
     @torch.no_grad()
-    def encode(self, *modalities: Modality) -> dict[str, torch.Tensor]:
+    def encode(self, *modalities: TokenModality) -> dict[str, torch.Tensor]:
         """Encode multiple modalities.
 
         Args:
@@ -85,6 +85,10 @@ class CodecManager:
         tokens = {}
 
         for modality in modalities:
+            if not isinstance(modality, TokenModality):
+                raise ModalityTypeError(
+                    f"Modality {type(modality).__name__} does not have a token_key attribute"
+                )
             # Get the appropriate codec
             codec = self._load_codec(type(modality))
             codec = codec.to(self.device)
@@ -92,15 +96,7 @@ class CodecManager:
             # Tokenize the modality
             tokenized = codec.encode(modality)
 
-            # Get the token key for this modality
-            if hasattr(modality, "token_key"):
-                token_key = modality.token_key
-            else:
-                raise ModalityTypeError(
-                    f"Modality {type(modality).__name__} does not have a token_key attribute"
-                )
-
-            tokens[token_key] = tokenized
+            tokens[modality.token_key] = tokenized
 
         return tokens
 
@@ -108,9 +104,9 @@ class CodecManager:
     def decode(
         self,
         tokens: dict[str, torch.Tensor],
-        modality_type: Modality,
+        modality_type: type[TokenModality],
         **metadata,
-    ) -> Modality:
+    ) -> TokenModality:
         """Decode tokens back to a modality.
 
         Args:
@@ -122,7 +118,7 @@ class CodecManager:
         Returns:
             Decoded modality instance
         """
-        if not hasattr(modality_type, "token_key"):
+        if not issubclass(modality_type, TokenModality):
             raise ModalityTypeError(
                 f"Modality type {modality_type} does not have a token_key attribute"
             )
