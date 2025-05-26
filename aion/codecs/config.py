@@ -1,6 +1,6 @@
 from dataclasses import dataclass
+from typing import TypeVar
 
-from aion.codecs.base import Codec
 from aion.codecs.catalog import CatalogCodec
 from aion.codecs.image import ImageCodec
 from aion.codecs.scalar import (
@@ -52,12 +52,26 @@ from aion.modalities import (
     Z,
 )
 
+CodecType = TypeVar(
+    "CodecModel",
+    bound=type[
+        CatalogCodec
+        | GridScalarCodec
+        | ImageCodec
+        | LogScalarCodec
+        | MultiScalarCodec
+        | ScalarCodec
+        | ScalarFieldCodec
+        | SpectrumCodec
+    ],
+)
+
 
 @dataclass
 class CodecHFConfig:
     """Codec configuration for AION."""
 
-    codec_class: Codec
+    codec_class: CodecType
     repo_id: str
 
 
