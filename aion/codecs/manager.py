@@ -3,8 +3,6 @@
 Handles dynamic loading and management of codecs for different modalities.
 """
 
-from typing import Dict, Optional, Type, Union
-
 import torch
 
 from aion.codecs.base import Codec
@@ -24,7 +22,7 @@ class CodecManager:
     """Manager for loading and using codecs for different modalities."""
 
     def __init__(
-        self, device: Union[str, torch.device] = "cpu", cache_dir: Optional[str] = None
+        self, device: str | torch.device = "cpu", cache_dir: str | None = None
     ):
         """Initialize the codec manager.
 
@@ -34,12 +32,12 @@ class CodecManager:
         """
         self.device = device
         self.cache_dir = cache_dir
-        self._codecs: Dict[str, Codec] = {}  # Cache by repo_id to handle shared codecs
-        self._modality_to_codec: Dict[
-            Type[Modality], Codec
+        self._codecs: dict[str, Codec] = {}  # Cache by repo_id to handle shared codecs
+        self._modality_to_codec: dict[
+            Modality, Codec
         ] = {}  # Map modality types to codecs
 
-    def _get_codec_for_modality(self, modality_type: Type[Modality]) -> Codec:
+    def _get_codec_for_modality(self, modality_type: Modality) -> Codec:
         """Get or load the appropriate codec for a modality."""
 
         # Check if codec is already loaded for this modality type
@@ -51,7 +49,7 @@ class CodecManager:
         self._modality_to_codec[modality_type] = codec
         return codec
 
-    def _load_codec(self, modality_type: Type[Modality]) -> Codec:
+    def _load_codec(self, modality_type: Modality) -> Codec:
         """Load a codec for the given modality type."""
         # Look up configuration in CODEC_CONFIG
         if modality_type not in CODEC_CONFIG:
@@ -86,7 +84,7 @@ class CodecManager:
         return codec
 
     @torch.no_grad()
-    def encode(self, *modalities: Modality) -> Dict[str, torch.Tensor]:
+    def encode(self, *modalities: Modality) -> dict[str, torch.Tensor]:
         """Encode multiple modalities.
 
         Args:
@@ -119,8 +117,8 @@ class CodecManager:
     @torch.no_grad()
     def decode(
         self,
-        tokens: Dict[str, torch.Tensor],
-        modality_type: Type[Modality],
+        tokens: dict[str, torch.Tensor],
+        modality_type: Modality,
         **metadata,
     ) -> Modality:
         """Decode tokens back to a modality.
