@@ -145,7 +145,7 @@ class CodecManager:
 
             # Find the modality type from token_key
             modality_type = None
-            for mod_type, config in CODEC_CONFIG.items():
+            for mod_type in CODEC_CONFIG.keys():
                 if hasattr(mod_type, "token_key") and mod_type.token_key == token_key:
                     modality_type = mod_type
                     break

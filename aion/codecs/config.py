@@ -1,58 +1,63 @@
 # Configuration for codecs
 
+from aion.codecs.catalog import CatalogCodec
+from aion.codecs.image import ImageCodec
+from aion.codecs.scalar import (
+    GridScalarCodec,
+    LogScalarCodec,
+    MultiScalarCodec,
+    ScalarCodec,
+)
+from aion.codecs.scalar_field import ScalarFieldCodec
+from aion.codecs.spectrum import SpectrumCodec
 from aion.modalities import (
+    HSCAG,
+    HSCAI,
+    HSCAR,
+    HSCAY,
+    HSCAZ,
+    Dec,
+    GaiaFluxBp,
+    GaiaFluxG,
+    GaiaFluxRp,
+    GaiaParallax,
+    GaiaXpBp,
+    GaiaXpRp,
+    HSCMagG,
+    HSCMagI,
+    HSCMagR,
+    HSCMagY,
+    HSCMagZ,
+    HSCShape11,
+    HSCShape12,
+    HSCShape22,
     Image,
-    Spectrum,
     LegacySurveyCatalog,
-    LegacySurveySegmentationMap,
+    LegacySurveyEBV,
     LegacySurveyFluxG,
-    LegacySurveyFluxR,
     LegacySurveyFluxI,
-    LegacySurveyFluxZ,
+    LegacySurveyFluxR,
     LegacySurveyFluxW1,
     LegacySurveyFluxW2,
     LegacySurveyFluxW3,
     LegacySurveyFluxW4,
-    LegacySurveyShapeR,
+    LegacySurveyFluxZ,
+    LegacySurveyImage,
+    LegacySurveySegmentationMap,
     LegacySurveyShapeE1,
     LegacySurveyShapeE2,
-    LegacySurveyEBV,
-    Z,
-    HSCAG,
-    HSCAR,
-    HSCAI,
-    HSCAZ,
-    HSCAY,
-    HSCMagG,
-    HSCMagR,
-    HSCMagI,
-    HSCMagZ,
-    HSCMagY,
-    HSCShape11,
-    HSCShape22,
-    HSCShape12,
-    GaiaFluxG,
-    GaiaFluxBp,
-    GaiaFluxRp,
-    GaiaParallax,
+    LegacySurveyShapeR,
     Ra,
-    Dec,
-    GaiaXpBp,
-    GaiaXpRp,
-)
-from aion.codecs.image import ImageCodec
-from aion.codecs.spectrum import SpectrumCodec
-from aion.codecs.catalog import CatalogCodec
-from aion.codecs.scalar_field import ScalarFieldCodec
-from aion.codecs.scalar import (
-    ScalarCodec,
-    LogScalarCodec,
-    MultiScalarCodec,
-    GridScalarCodec,
+    Spectrum,
+    Z,
 )
 
 CODEC_CONFIG = {
     Image: {
+        "class": ImageCodec,
+        "repo_id": "polymathic-ai/aion-image-codec",
+    },
+    LegacySurveyImage: {
         "class": ImageCodec,
         "repo_id": "polymathic-ai/aion-image-codec",
     },
