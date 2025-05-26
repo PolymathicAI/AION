@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 import torch
 
-from aion.codecs.manager import CodecManager, ModalityTypeError, TokenKeyError
+from aion.codecs.manager import CodecManager, ModalityTypeError
 from aion.modalities import (
     DESISpectrum,
     LegacySurveyFluxG,
@@ -47,13 +47,6 @@ class TestCodecManager:
         assert isinstance(decoded_image, LegacySurveyImage)
         assert decoded_image.flux.shape == image.flux.shape
 
-        # Decode using token key
-        decoded_image_2 = manager.decode(
-            tokens, "tok_image", bands=["DES-G", "DES-R", "DES-I", "DES-Z"]
-        )
-        assert isinstance(decoded_image_2, LegacySurveyImage)
-        assert torch.allclose(decoded_image.flux, decoded_image_2.flux)
-
     def test_encode_decode_spectrum(self, manager: CodecManager, data_dir: Path):
         """Test encoding and decoding Spectrum modality."""
         # Load test data
@@ -76,7 +69,9 @@ class TestCodecManager:
         # Decode
         decoded_spectrum = manager.decode(tokens, DESISpectrum)
         assert isinstance(decoded_spectrum, DESISpectrum)
-        assert decoded_spectrum.flux.shape == spectrum.flux.shape
+        assert decoded_spectrum.flux.shape[0] == spectrum.flux.shape[0]
+        # Spectrum are returned with a fixed length
+        assert decoded_spectrum.flux.shape[1] >= spectrum.flux.shape[1]
 
     def test_codec_caching(self, manager: CodecManager):
         """Test that codecs are properly cached and reused."""
@@ -106,16 +101,6 @@ class TestCodecManager:
 
         with pytest.raises(ModalityTypeError):
             manager._load_codec(InvalidModality)
-
-        # Test decoding with missing token key
-        tokens = {"tok_flux_g": torch.randn(4, 10)}
-
-        with pytest.raises(TokenKeyError):
-            manager.decode(tokens, "tok_missing")
-
-        # Test decoding with invalid token key
-        with pytest.raises(TokenKeyError):
-            manager.decode(tokens, "invalid_token_key")
 
     @pytest.mark.parametrize("batch_size", [1, 4, 16])
     def test_different_batch_sizes(self, manager: CodecManager, batch_size: int):

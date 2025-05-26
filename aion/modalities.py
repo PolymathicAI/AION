@@ -5,6 +5,49 @@ from pydantic import BaseModel, Field, ConfigDict
 from jaxtyping import Float, Bool, Int
 from torch import Tensor
 
+__all__ = [
+    "LegacySurveyImage",
+    "HSCImage",
+    "DESISpectrum",
+    "SDSSSpectrum",
+    "LegacySurveyCatalog",
+    "LegacySurveySegmentationMap",
+    "LegacySurveyFluxG",
+    "LegacySurveyFluxR",
+    "LegacySurveyFluxI",
+    "LegacySurveyFluxZ",
+    "LegacySurveyFluxW1",
+    "LegacySurveyFluxW2",
+    "LegacySurveyFluxW3",
+    "LegacySurveyFluxW4",
+    "LegacySurveyShapeR",
+    "LegacySurveyShapeE1",
+    "LegacySurveyShapeE2",
+    "LegacySurveyEBV",
+    "Z",
+    "HSCAG",
+    "HSCAR",
+    "HSCAI",
+    "HSCAZ",
+    "HSCAY",
+    "HSCMagG",
+    "HSCMagR",
+    "HSCMagI",
+    "HSCMagZ",
+    "HSCMagY",
+    "HSCShape11",
+    "HSCShape22",
+    "HSCShape12",
+    "GaiaFluxG",
+    "GaiaFluxBp",
+    "GaiaFluxRp",
+    "GaiaParallax",
+    "Ra",
+    "Dec",
+    "GaiaXpBp",
+    "GaiaXpRp",
+]
+
 
 class Modality(BaseModel):
     """Base class for all modality data types."""

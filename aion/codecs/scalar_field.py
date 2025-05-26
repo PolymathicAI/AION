@@ -138,6 +138,10 @@ class AutoencoderScalarFieldCodec(Codec):
     def _decode(self, z: Float[Tensor, "b c h*w"]) -> LegacySurveySegmentationMap:
         batch_size, embedding_dim, n_tokens = z.shape
         spatial_size = int(n_tokens**0.5)
+        assert spatial_size * spatial_size == n_tokens, (
+            f"n_tokens ({n_tokens}) is not a perfect square. "
+            f"Calculated spatial_size: {spatial_size}."
+        )
         z = z.reshape(batch_size, embedding_dim, spatial_size, spatial_size)
         h = self.decode_proj(z)
         x_hat = self.decoder(h)

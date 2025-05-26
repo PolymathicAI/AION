@@ -120,53 +120,30 @@ class CodecManager:
     def decode(
         self,
         tokens: Dict[str, torch.Tensor],
-        modality_or_token_key: Union[Type[Modality], str],
+        modality_type: Type[Modality],
         **metadata,
     ) -> Modality:
         """Decode tokens back to a modality.
 
         Args:
             tokens: Dictionary mapping token keys to tokenized tensors
-            modality_or_token_key: Either a modality type (e.g., DESISpectrum) or a token key string (e.g., 'tok_spectrum_desi')
+            modality_type: The modality type (e.g., DESISpectrum) to decode into
             **metadata: Additional metadata required by the specific codec
                        (e.g., wavelength for spectra, bands for images)
 
         Returns:
             Decoded modality instance
         """
-        # Determine token_key and modality_type
-        if isinstance(modality_or_token_key, str):
-            # Token key provided
-            token_key = modality_or_token_key
-            if token_key not in tokens:
-                raise TokenKeyError(
-                    f"Token key '{token_key}' not found in tokens dictionary"
-                )
+        if not hasattr(modality_type, "token_key"):
+            raise ModalityTypeError(
+                f"Modality type {modality_type} does not have a token_key attribute"
+            )
 
-            # Find the modality type from token_key
-            modality_type = None
-            for mod_type in CODEC_CONFIG.keys():
-                if hasattr(mod_type, "token_key") and mod_type.token_key == token_key:
-                    modality_type = mod_type
-                    break
-
-            if modality_type is None:
-                raise TokenKeyError(
-                    f"No modality type found for token key '{token_key}'"
-                )
-        else:
-            # Modality type provided
-            modality_type = modality_or_token_key
-            if not hasattr(modality_type, "token_key"):
-                raise ModalityTypeError(
-                    f"Modality type {modality_type.__name__} does not have a token_key attribute"
-                )
-
-            token_key = modality_type.token_key
-            if token_key not in tokens:
-                raise TokenKeyError(
-                    f"Token key '{token_key}' for modality {modality_type.__name__} not found in tokens dictionary"
-                )
+        token_key = modality_type.token_key
+        if token_key not in tokens:
+            raise TokenKeyError(
+                f"Token key '{token_key}' for modality {modality_type} not found in tokens dictionary"
+            )
 
         # Get the appropriate codec
         codec = self._get_codec_for_modality(modality_type)

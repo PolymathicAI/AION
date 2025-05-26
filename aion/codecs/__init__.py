@@ -4,6 +4,7 @@ from .spectrum import SpectrumCodec
 from .catalog import CatalogCodec
 from .scalar_field import ScalarFieldCodec
 from .base import Codec
+from .manager import CodecManager
 
 __all__ = [
     "ImageCodec",
@@ -15,4 +16,5 @@ __all__ = [
     "CatalogCodec",
     "ScalarFieldCodec",
     "Codec",
+    "CodecManager",
 ]
