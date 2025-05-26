@@ -1,13 +1,15 @@
 """Test the CodecManager class."""
 
+from pathlib import Path
+
 import pytest
 import torch
 
 from aion.codecs.manager import CodecManager
 from aion.modalities import (
-    LegacySurveyImage,
     DESISpectrum,
     LegacySurveyFluxG,
+    LegacySurveyImage,
     LegacySurveyShapeE1,
 )
 
@@ -20,7 +22,7 @@ class TestCodecManager:
         """Create a CodecManager instance."""
         return CodecManager(device="cpu")
 
-    def test_encode_decode_image(self, manager, data_dir):
+    def test_encode_decode_image(self, manager: CodecManager, data_dir: Path):
         """Test encoding and decoding Image modality."""
         # Load test data
         input_batch_dict = torch.load(
@@ -52,7 +54,7 @@ class TestCodecManager:
         assert isinstance(decoded_image_2, LegacySurveyImage)
         assert torch.allclose(decoded_image.flux, decoded_image_2.flux)
 
-    def test_encode_decode_spectrum(self, manager, data_dir):
+    def test_encode_decode_spectrum(self, manager: CodecManager, data_dir: Path):
         """Test encoding and decoding Spectrum modality."""
         # Load test data
         input_batch = torch.load(
@@ -76,7 +78,7 @@ class TestCodecManager:
         assert isinstance(decoded_spectrum, DESISpectrum)
         assert decoded_spectrum.flux.shape == spectrum.flux.shape
 
-    def test_codec_caching(self, manager):
+    def test_codec_caching(self, manager: CodecManager):
         """Test that codecs are properly cached and reused."""
         # Create two modalities that use the same codec type
         flux_g1 = LegacySurveyFluxG(value=torch.randn(4, 1))
@@ -95,7 +97,7 @@ class TestCodecManager:
         codec2 = manager._get_codec_for_modality(LegacySurveyFluxG)
         assert codec1 is codec2
 
-    def test_error_handling(self, manager):
+    def test_error_handling(self, manager: CodecManager):
         """Test error handling in CodecManager."""
 
         # Test with invalid modality type
@@ -116,7 +118,7 @@ class TestCodecManager:
             manager.decode(tokens, "invalid_token_key")
 
     @pytest.mark.parametrize("batch_size", [1, 4, 16])
-    def test_different_batch_sizes(self, manager, batch_size):
+    def test_different_batch_sizes(self, manager: CodecManager, batch_size: int):
         """Test that CodecManager handles different batch sizes correctly."""
         # Create modalities with different batch sizes
         flux_g = LegacySurveyFluxG(value=torch.randn(batch_size, 1))
