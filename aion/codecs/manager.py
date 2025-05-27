@@ -3,6 +3,7 @@
 Handles dynamic loading and management of codecs for different modalities.
 """
 
+from dataclasses import asdict
 from functools import lru_cache
 
 import torch
@@ -137,6 +138,6 @@ class CodecManager:
         decoded_modality = codec.decode(tokens[token_key], **metadata)
 
         # Cast decoded modality to the correct type
-        decoded_modality = modality_type(**decoded_modality.as_dict())
+        decoded_modality = modality_type(**asdict(decoded_modality))
 
         return decoded_modality

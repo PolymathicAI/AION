@@ -1,7 +1,8 @@
-from dataclasses import dataclass, field, fields
+from dataclasses import dataclass, fields
 from abc import ABC
 from jaxtyping import Float, Bool, Int
 from torch import Tensor
+from typing import ClassVar
 
 __all__ = [
     "LegacySurveyImage",
@@ -59,7 +60,7 @@ class Modality(ABC):
 class TokenModality(Modality):
     """Base class for all token modalities."""
 
-    token_key: str = ""
+    token_key: ClassVar[str] = ""
 
 
 @dataclass
@@ -81,14 +82,14 @@ class Image(Modality):
 class HSCImage(Image, TokenModality):
     """HSC image modality data."""
 
-    token_key: str = field(init=False, default="tok_image_hsc")
+    token_key: ClassVar[str] = "tok_image_hsc"
 
 
 @dataclass
 class LegacySurveyImage(Image, TokenModality):
     """Legacy Survey image modality data."""
 
-    token_key: str = field(init=False, default="tok_image")
+    token_key: ClassVar[str] = "tok_image"
 
 
 @dataclass
@@ -116,14 +117,14 @@ class Spectrum(Modality):
 class DESISpectrum(Spectrum, TokenModality):
     """DESI spectrum modality data."""
 
-    token_key: str = field(init=False, default="tok_spectrum_desi")
+    token_key: ClassVar[str] = "tok_spectrum_desi"
 
 
 @dataclass
 class SDSSSpectrum(Spectrum, TokenModality):
     """SDSS spectrum modality data."""
 
-    token_key: str = field(init=False, default="tok_spectrum_sdss")
+    token_key: ClassVar[str] = "tok_spectrum_sdss"
 
 
 # Catalog modality
@@ -139,7 +140,7 @@ class LegacySurveyCatalog(TokenModality):
     SHAPE_E1: Float[Tensor, " batch n"]
     SHAPE_E2: Float[Tensor, " batch n"]
     SHAPE_R: Float[Tensor, " batch n"]
-    token_key: str = field(init=False, default="catalog")
+    token_key: ClassVar[str] = "catalog"
 
 
 @dataclass
@@ -150,7 +151,7 @@ class LegacySurveySegmentationMap(TokenModality):
     """
 
     field: Float[Tensor, " batch height width"]
-    token_key: str = field(init=False, default="tok_segmap")
+    token_key: ClassVar[str] = "tok_segmap"
 
     def __repr__(self) -> str:
         repr_str = f"LegacySurveySegmentationMap(field_shape={list(self.field.shape)})"
@@ -176,64 +177,64 @@ class Scalar(Modality):
 class LegacySurveyFluxG(Scalar, TokenModality):
     """G-band flux measurement from Legacy Survey."""
 
-    name: str = field(init=False, default="FLUX_G")
-    token_key: str = field(init=False, default="tok_flux_g")
+    name: ClassVar[str] = "FLUX_G"
+    token_key: ClassVar[str] = "tok_flux_g"
 
 
 @dataclass
 class LegacySurveyFluxR(Scalar, TokenModality):
     """R-band flux measurement."""
 
-    name: str = field(init=False, default="FLUX_R")
-    token_key: str = field(init=False, default="tok_flux_r")
+    name: ClassVar[str] = "FLUX_R"
+    token_key: ClassVar[str] = "tok_flux_r"
 
 
 @dataclass
 class LegacySurveyFluxI(Scalar, TokenModality):
     """I-band flux measurement."""
 
-    name: str = field(init=False, default="FLUX_I")
-    token_key: str = field(init=False, default="tok_flux_i")
+    name: ClassVar[str] = "FLUX_I"
+    token_key: ClassVar[str] = "tok_flux_i"
 
 
 @dataclass
 class LegacySurveyFluxZ(Scalar, TokenModality):
     """Z-band flux measurement."""
 
-    name: str = field(init=False, default="FLUX_Z")
-    token_key: str = field(init=False, default="tok_flux_z")
+    name: ClassVar[str] = "FLUX_Z"
+    token_key: ClassVar[str] = "tok_flux_z"
 
 
 @dataclass
 class LegacySurveyFluxW1(Scalar, TokenModality):
     """WISE W1-band flux measurement."""
 
-    name: str = field(init=False, default="FLUX_W1")
-    token_key: str = field(init=False, default="tok_flux_w1")
+    name: ClassVar[str] = "FLUX_W1"
+    token_key: ClassVar[str] = "tok_flux_w1"
 
 
 @dataclass
 class LegacySurveyFluxW2(Scalar, TokenModality):
     """WISE W2-band flux measurement."""
 
-    name: str = field(init=False, default="FLUX_W2")
-    token_key: str = field(init=False, default="tok_flux_w2")
+    name: ClassVar[str] = "FLUX_W2"
+    token_key: ClassVar[str] = "tok_flux_w2"
 
 
 @dataclass
 class LegacySurveyFluxW3(Scalar, TokenModality):
     """WISE W3-band flux measurement."""
 
-    name: str = field(init=False, default="FLUX_W3")
-    token_key: str = field(init=False, default="tok_flux_w3")
+    name: ClassVar[str] = "FLUX_W3"
+    token_key: ClassVar[str] = "tok_flux_w3"
 
 
 @dataclass
 class LegacySurveyFluxW4(Scalar, TokenModality):
     """WISE W4-band flux measurement."""
 
-    name: str = field(init=False, default="FLUX_W4")
-    token_key: str = field(init=False, default="tok_flux_w4")
+    name: ClassVar[str] = "FLUX_W4"
+    token_key: ClassVar[str] = "tok_flux_w4"
 
 
 # Shape parameters
@@ -241,24 +242,24 @@ class LegacySurveyFluxW4(Scalar, TokenModality):
 class LegacySurveyShapeR(Scalar, TokenModality):
     """R-band shape measurement (e.g., half-light radius)."""
 
-    name: str = field(init=False, default="SHAPE_R")
-    token_key: str = field(init=False, default="tok_shape_r")
+    name: ClassVar[str] = "SHAPE_R"
+    token_key: ClassVar[str] = "tok_shape_r"
 
 
 @dataclass
 class LegacySurveyShapeE1(Scalar, TokenModality):
     """First ellipticity component."""
 
-    name: str = field(init=False, default="SHAPE_E1")
-    token_key: str = field(init=False, default="tok_shape_e1")
+    name: ClassVar[str] = "SHAPE_E1"
+    token_key: ClassVar[str] = "tok_shape_e1"
 
 
 @dataclass
 class LegacySurveyShapeE2(Scalar, TokenModality):
     """Second ellipticity component."""
 
-    name: str = field(init=False, default="SHAPE_E2")
-    token_key: str = field(init=False, default="tok_shape_e2")
+    name: ClassVar[str] = "SHAPE_E2"
+    token_key: ClassVar[str] = "tok_shape_e2"
 
 
 # Other scalar properties
@@ -266,8 +267,8 @@ class LegacySurveyShapeE2(Scalar, TokenModality):
 class LegacySurveyEBV(Scalar, TokenModality):
     """E(B-V) extinction measurement."""
 
-    name: str = field(init=False, default="EBV")
-    token_key: str = field(init=False, default="tok_ebv")
+    name: ClassVar[str] = "EBV"
+    token_key: ClassVar[str] = "tok_ebv"
 
 
 # Spectroscopic redshift
@@ -275,8 +276,8 @@ class LegacySurveyEBV(Scalar, TokenModality):
 class Z(Scalar, TokenModality):
     """Spectroscopic redshift measurement."""
 
-    name: str = field(init=False, default="Z")
-    token_key: str = field(init=False, default="tok_z")
+    name: ClassVar[str] = "Z"
+    token_key: ClassVar[str] = "tok_z"
 
 
 # Extinction values from HSC
@@ -284,104 +285,104 @@ class Z(Scalar, TokenModality):
 class HSCAG(Scalar, TokenModality):
     """HSC a_g extinction."""
 
-    name: str = field(init=False, default="a_g")
-    token_key: str = field(init=False, default="tok_a_g")
+    name: ClassVar[str] = "a_g"
+    token_key: ClassVar[str] = "tok_a_g"
 
 
 @dataclass
 class HSCAR(Scalar, TokenModality):
     """HSC a_r extinction."""
 
-    name: str = field(init=False, default="a_r")
-    token_key: str = field(init=False, default="tok_a_r")
+    name: ClassVar[str] = "a_r"
+    token_key: ClassVar[str] = "tok_a_r"
 
 
 @dataclass
 class HSCAI(Scalar, TokenModality):
     """HSC a_i extinction."""
 
-    name: str = field(init=False, default="a_i")
-    token_key: str = field(init=False, default="tok_a_i")
+    name: ClassVar[str] = "a_i"
+    token_key: ClassVar[str] = "tok_a_i"
 
 
 @dataclass
 class HSCAZ(Scalar, TokenModality):
     """HSC a_z extinction."""
 
-    name: str = field(init=False, default="a_z")
-    token_key: str = field(init=False, default="tok_a_z")
+    name: ClassVar[str] = "a_z"
+    token_key: ClassVar[str] = "tok_a_z"
 
 
 @dataclass
 class HSCAY(Scalar, TokenModality):
     """HSC a_y extinction."""
 
-    name: str = field(init=False, default="a_y")
-    token_key: str = field(init=False, default="tok_a_y")
+    name: ClassVar[str] = "a_y"
+    token_key: ClassVar[str] = "tok_a_y"
 
 
 @dataclass
 class HSCMagG(Scalar, TokenModality):
     """HSC g-band cmodel magnitude."""
 
-    name: str = field(init=False, default="g_cmodel_mag")
-    token_key: str = field(init=False, default="tok_mag_g")
+    name: ClassVar[str] = "g_cmodel_mag"
+    token_key: ClassVar[str] = "tok_mag_g"
 
 
 @dataclass
 class HSCMagR(Scalar, TokenModality):
     """HSC r-band cmodel magnitude."""
 
-    name: str = field(init=False, default="r_cmodel_mag")
-    token_key: str = field(init=False, default="tok_mag_r")
+    name: ClassVar[str] = "r_cmodel_mag"
+    token_key: ClassVar[str] = "tok_mag_r"
 
 
 @dataclass
 class HSCMagI(Scalar, TokenModality):
     """HSC i-band cmodel magnitude."""
 
-    name: str = field(init=False, default="i_cmodel_mag")
-    token_key: str = field(init=False, default="tok_mag_i")
+    name: ClassVar[str] = "i_cmodel_mag"
+    token_key: ClassVar[str] = "tok_mag_i"
 
 
 @dataclass
 class HSCMagZ(Scalar, TokenModality):
     """HSC z-band cmodel magnitude."""
 
-    name: str = field(init=False, default="z_cmodel_mag")
-    token_key: str = field(init=False, default="tok_mag_z")
+    name: ClassVar[str] = "z_cmodel_mag"
+    token_key: ClassVar[str] = "tok_mag_z"
 
 
 @dataclass
 class HSCMagY(Scalar, TokenModality):
     """HSC y-band cmodel magnitude."""
 
-    name: str = field(init=False, default="y_cmodel_mag")
-    token_key: str = field(init=False, default="tok_mag_y")
+    name: ClassVar[str] = "y_cmodel_mag"
+    token_key: ClassVar[str] = "tok_mag_y"
 
 
 @dataclass
 class HSCShape11(Scalar, TokenModality):
     """HSC i-band SDSS shape 11 component."""
 
-    name: str = field(init=False, default="i_sdssshape_shape11")
-    token_key: str = field(init=False, default="tok_shape11")
+    name: ClassVar[str] = "i_sdssshape_shape11"
+    token_key: ClassVar[str] = "tok_shape11"
 
 
 @dataclass
 class HSCShape22(Scalar, TokenModality):
     """HSC i-band SDSS shape 22 component."""
 
-    name: str = field(init=False, default="i_sdssshape_shape22")
-    token_key: str = field(init=False, default="tok_shape22")
+    name: ClassVar[str] = "i_sdssshape_shape22"
+    token_key: ClassVar[str] = "tok_shape22"
 
 
 @dataclass
 class HSCShape12(Scalar, TokenModality):
     """HSC i-band SDSS shape 12 component."""
 
-    name: str = field(init=False, default="i_sdssshape_shape12")
-    token_key: str = field(init=False, default="tok_shape12")
+    name: ClassVar[str] = "i_sdssshape_shape12"
+    token_key: ClassVar[str] = "tok_shape12"
 
 
 # Gaia modalities
@@ -389,64 +390,64 @@ class HSCShape12(Scalar, TokenModality):
 class GaiaFluxG(Scalar, TokenModality):
     """Gaia G-band mean flux."""
 
-    name: str = field(init=False, default="phot_g_mean_flux")
-    token_key: str = field(init=False, default="tok_flux_g_gaia")
+    name: ClassVar[str] = "phot_g_mean_flux"
+    token_key: ClassVar[str] = "tok_flux_g_gaia"
 
 
 @dataclass
 class GaiaFluxBp(Scalar, TokenModality):
     """Gaia BP-band mean flux."""
 
-    name: str = field(init=False, default="phot_bp_mean_flux")
-    token_key: str = field(init=False, default="tok_flux_bp_gaia")
+    name: ClassVar[str] = "phot_bp_mean_flux"
+    token_key: ClassVar[str] = "tok_flux_bp_gaia"
 
 
 @dataclass
 class GaiaFluxRp(Scalar, TokenModality):
     """Gaia RP-band mean flux."""
 
-    name: str = field(init=False, default="phot_rp_mean_flux")
-    token_key: str = field(init=False, default="tok_flux_rp_gaia")
+    name: ClassVar[str] = "phot_rp_mean_flux"
+    token_key: ClassVar[str] = "tok_flux_rp_gaia"
 
 
 @dataclass
 class GaiaParallax(Scalar, TokenModality):
     """Gaia parallax measurement."""
 
-    name: str = field(init=False, default="parallax")
-    token_key: str = field(init=False, default="tok_parallax")
+    name: ClassVar[str] = "parallax"
+    token_key: ClassVar[str] = "tok_parallax"
 
 
 @dataclass
 class Ra(Scalar, TokenModality):
     """Right ascension coordinate."""
 
-    name: str = field(init=False, default="ra")
-    token_key: str = field(init=False, default="tok_ra")
+    name: ClassVar[str] = "ra"
+    token_key: ClassVar[str] = "tok_ra"
 
 
 @dataclass
 class Dec(Scalar, TokenModality):
     """Declination coordinate."""
 
-    name: str = field(init=False, default="dec")
-    token_key: str = field(init=False, default="tok_dec")
+    name: ClassVar[str] = "dec"
+    token_key: ClassVar[str] = "tok_dec"
 
 
 @dataclass
 class GaiaXpBp(Scalar, TokenModality):
     """Gaia BP spectral coefficients."""
 
-    name: str = field(init=False, default="bp_coefficients")
-    token_key: str = field(init=False, default="tok_xp_bp")
+    name: ClassVar[str] = "bp_coefficients"
+    token_key: ClassVar[str] = "tok_xp_bp"
 
 
 @dataclass
 class GaiaXpRp(Scalar, TokenModality):
     """Gaia RP spectral coefficients."""
 
-    name: str = field(init=False, default="rp_coefficients")
-    token_key: str = field(init=False, default="tok_xp_rp")
+    name: ClassVar[str] = "rp_coefficients"
+    token_key: ClassVar[str] = "tok_xp_rp"
 
 
 ScalarModalities = [
