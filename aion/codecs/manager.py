@@ -10,7 +10,7 @@ import torch
 
 from aion.codecs.base import Codec
 from aion.codecs.config import CODEC_CONFIG, CodecType
-from aion.modalities import Modality, TokenModality
+from aion.modalities import BaseModality, Modality
 
 
 class ModalityTypeError(TypeError):
@@ -52,7 +52,7 @@ class CodecManager:
         return codec
 
     @lru_cache
-    def _load_codec(self, modality_type: type[Modality]) -> Codec:
+    def _load_codec(self, modality_type: type[BaseModality]) -> Codec:
         """Load a codec for the given modality type."""
         # Look up configuration in CODEC_CONFIG
         if modality_type in CODEC_CONFIG:
@@ -74,7 +74,7 @@ class CodecManager:
         return codec
 
     @torch.no_grad()
-    def encode(self, *modalities: TokenModality) -> dict[str, torch.Tensor]:
+    def encode(self, *modalities: Modality) -> dict[str, torch.Tensor]:
         """Encode multiple modalities.
 
         Args:
@@ -86,7 +86,7 @@ class CodecManager:
         tokens = {}
 
         for modality in modalities:
-            if not isinstance(modality, TokenModality):
+            if not isinstance(modality, Modality):
                 raise ModalityTypeError(
                     f"Modality {type(modality).__name__} does not have a token_key attribute"
                 )
@@ -105,9 +105,9 @@ class CodecManager:
     def decode(
         self,
         tokens: dict[str, torch.Tensor],
-        modality_type: type[TokenModality],
+        modality_type: type[Modality],
         **metadata,
-    ) -> TokenModality:
+    ) -> Modality:
         """Decode tokens back to a modality.
 
         Args:
@@ -119,7 +119,7 @@ class CodecManager:
         Returns:
             Decoded modality instance
         """
-        if not issubclass(modality_type, TokenModality):
+        if not issubclass(modality_type, Modality):
             raise ModalityTypeError(
                 f"Modality type {modality_type} does not have a token_key attribute"
             )
