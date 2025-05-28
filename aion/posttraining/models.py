@@ -50,7 +50,7 @@ class CrossAttentionProbing(BaseModel):
         super().__init__(aion_model_path, num_encoder_tokens)
         self.query = torch.nn.Parameter(torch.randn(1, dim_out, self.aion_backbone.dim))
         self.attention = NormCrossAttention(
-            dim_out, num_heads=num_heads, proj_bias=False
+            self.aion_backbone.dim, num_heads=num_heads, proj_bias=False
         )
         self.attention = torch.compile(self.attention)
         self.decoders = torch.nn.ModuleList(
@@ -63,6 +63,7 @@ class CrossAttentionProbing(BaseModel):
         query = self.query.expand(embeddings.size(0), -1, -1)
         output = self.attention(query, embeddings)
         # Apply linear layers
+        # TODO: Optimize operation instead of for-loop
         output = torch.cat(
             [decoder(output[:, i]) for i, decoder in enumerate(self.decoders)], dim=-1
         )
