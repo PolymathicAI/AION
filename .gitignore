@@ -147,9 +147,12 @@ venv.bak/
 /site
 
 # mypy
-.mypy_cache/
+.mypy_cache
 .dmypy.json
 dmypy.json
+
+# Ruff
+.ruff_cache
 
 # Pyre type checker
 .pyre/
@@ -169,3 +172,6 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+notebooks
+data
+old_impl

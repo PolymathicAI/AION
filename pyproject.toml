@@ -6,30 +6,40 @@ build-backend = "setuptools.build_meta"
 name = "aion"
 version = "0.0.1"
 description = "AstronomIcal Omnimodal Network"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dependencies = [
-    "torch>=2.4.0",
-    "diffusers==0.20.0",
     "einops>=0.7.0",
-    "huggingface_hub==0.24.7",
-    "tokenizers>=0.15.2",
-    "beartype>=0.18.0",
+    "huggingface_hub>=0.24.7",
     "jaxtyping>=0.2.28",
-    "einx>=0.3.0",
-    "lightning[pytorch-extra]==2.2.5",
-    "python-dotenv>=1.0.1",
-    "wandb>=0.16.0",
-    "k-diffusion>=0.1.1",
-    "sep>=1.2.1",
-    "vector-quantize-pytorch==1.14.30",
+    "numpy",
+    "scipy",
+    "tokenizers>=0.15.2",
 ]
 
 [project.optional-dependencies]
+torch = [
+    "torch>=2.4.0",
+    "huggingface_hub[torch]>=0.24.7",
+]
 dev = [
     "pre-commit",
     "pytest",
     "ruff",
 ]
+docs = [
+    "furo",
+    "myst-parser>=1.0",
+    "sphinx-copybutton",
+    "sphinx-design",
+    "sphinxcontrib-mermaid",
+    "sphinx>=7.2",
+]
 
-[tool.setuptools]
-packages = ["aion", "aion.fourm"]
+[tool.ruff.lint]
+# Ignore space in shape notation for jaxtyping
+# See https://docs.kidger.site/jaxtyping/faq/#flake8-or-ruff-are-throwing-an-error
+ignore = ["F722"]
+
+[tool.setuptools.packages.find]
+include = ["aion*"]
+# Only include the 'aion' package and its subpackages
