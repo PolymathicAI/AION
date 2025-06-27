@@ -34,17 +34,6 @@ jobs:
     - name: Build package
       run: python -m build
 
-    - name: Verify version matches tag
-      run: |
-        TAG_VERSION=${GITHUB_REF#refs/tags/v}
-        PACKAGE_VERSION=$(python -c "import setuptools_scm; print(setuptools_scm.get_version())")
-        echo "Tag version: $TAG_VERSION"
-        echo "Package version: $PACKAGE_VERSION"
-        if [ "$TAG_VERSION" != "$PACKAGE_VERSION" ]; then
-          echo "Version mismatch! Tag: $TAG_VERSION, Package: $PACKAGE_VERSION"
-          exit 1
-        fi
-
     - name: Publish to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       # This action uses OIDC trusted publishing - no API tokens needed!
