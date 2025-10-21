@@ -225,7 +225,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🌟 Acknowledgments
 
-AION is developed by [Polymathic AI](https://polymathic-ai.org/), advancing the frontier of AI for scientific applications.
+AION is developed by [Polymathic AI](https://polymathic-ai.org/), advancing the frontier of AI for scientific applications. We would like to acknowledge the support of the Simons Foundation and of Schmidt Sciences. This project was provided with computer and storage resources by GENCI at IDRIS thanks to the grant 2024-GC011015468 on the supercomputer
+Jean Zay’s H100 partition. Additionally, some of the computations in this work were run at facilities supported by the Scientific Computing Core at the Flatiron Institute, a division of the Simons Foundation.
 
 ## 📬 Contact
 
