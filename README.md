@@ -3,10 +3,10 @@
 <div align="center">
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-≥2.4.0-ee4c2c.svg)](https://pytorch.org/)
 [![Tests](https://github.com/PolymathicAI/AION/actions/workflows/test.yaml/badge.svg)](https://github.com/PolymathicAI/AION/actions/workflows/test.yaml)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PolymathicAI/AION/blob/main/notebooks/Tutorial.ipynb)
+[![Model on HF](https://huggingface.co/datasets/huggingface/badges/resolve/main/model-on-hf-sm.svg)](https://huggingface.co/polymathic-ai/aion-base)
 
 **Polymathic's Large Omnimodal Model for Astronomy**
 
@@ -23,21 +23,6 @@
 </div>
 
 AION-1 is a cutting-edge large omnimodal model specifically designed for astronomical surveys. It seamlessly integrates multiple data modalities, and enables simple adaptation to a wide range of astronomical tasks.
-
-## Alpha Testing
-
-AION-1 model weights are hosted on Huggingface behind gates during the alpha testers phase. First, ensure that you have access to the Hugginface model weights. If you don't have access, you can request it directly on the [hugginface repo here](https://huggingface.co/polymathic-ai/aion-base).
-
-Once you have access, you will need to set up a huggingface token locally. This can be done by first installing hugginface_hub:
-```bash
-pip install huggingface_hub
-```
-
-and then logging in via
-```bash
-huggingface-cli login --token YOUR_HF_TOKEN
-```
-All of the ensuing steps should work out of the box after this point.
 
 ## 🚀 Quick Start
 
@@ -82,7 +67,6 @@ preds = model(
 Start with our interactive tutorial:
 - **[Open in Google Colab](https://colab.research.google.com/github/PolymathicAI/AION/blob/main/notebooks/Tutorial.ipynb)** - Learn AION basics interactively, no local setup required!
 
-For detailed guides, see the [online documentation](https://polymathic-ai.github.io/AION/).
 
 ## 🔬 Scientific Overview
 
@@ -114,11 +98,11 @@ AION-1’s tokenizers cover **39 distinct data types**, grouped by survey and da
 
 ### 📈 Model Variants
 
-| **Variant** | **Encoder Blocks** | **Decoder Blocks** | **Model Dim** | **Heads** | **Total Params** |
-|------------:|-------------------:|-------------------:|--------------:|----------:|-----------------:|
-| **Base**    | 12                 | 12                 | 768           | 12        | 300 M            |
-| **Large**   | 24                 | 24                 | 1024          | 16        | 800 M            |
-| **XLarge**  | 24                 | 24                 | 2048          | 32        | 3 B              |
+| **Variant** | **Encoder Blocks** | **Decoder Blocks** | **Model Dim** | **Heads** | **Total Params** | **Model** |
+|------------:|-------------------:|-------------------:|--------------:|----------:|-----------------:|-----------|
+| **Base**    | 12                 | 12                 | 768           | 12        | 300 M            | [aion-base](https://huggingface.co/polymathic-ai/aion-base) |
+| **Large**   | 24                 | 24                 | 1024          | 16        | 800 M            | soon |
+| **XLarge**  | 24                 | 24                 | 2048          | 32        | 3 B              | soon |
 
 > **Pretraining**
 > – Global batch size: 8 192
