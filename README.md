@@ -2,11 +2,13 @@
 
 <div align="center">
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![PyTorch](https://img.shields.io/badge/PyTorch-≥2.4.0-ee4c2c.svg)](https://pytorch.org/)
-[![Tests](https://github.com/PolymathicAI/AION/actions/workflows/test.yaml/badge.svg)](https://github.com/PolymathicAI/AION/actions/workflows/test.yaml)
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PolymathicAI/AION/blob/main/notebooks/Tutorial.ipynb)
-[![Model on HF](https://huggingface.co/datasets/huggingface/badges/resolve/main/model-on-hf-sm.svg)](https://huggingface.co/polymathic-ai/aion-base)
+<p align="center">
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT" style="vertical-align: middle;"></a>
+  <a href="https://pytorch.org/"><img src="https://img.shields.io/badge/PyTorch-≥2.4.0-ee4c2c.svg" alt="PyTorch" style="vertical-align: middle;"></a>
+  <a href="https://github.com/PolymathicAI/AION/actions/workflows/test.yaml"><img src="https://github.com/PolymathicAI/AION/actions/workflows/test.yaml/badge.svg" alt="Tests" style="vertical-align: middle;"></a>
+  <a href="https://colab.research.google.com/github/PolymathicAI/AION/blob/main/notebooks/Tutorial.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" style="vertical-align: middle;"></a>
+  <a href="https://huggingface.co/polymathic-ai/aion-base"><img src="https://huggingface.co/datasets/huggingface/badges/resolve/main/model-on-hf-sm.svg" alt="Model on HF" style="vertical-align: middle;"></a>
+</p>
 
 **Polymathic's Large Omnimodal Model for Astronomy**
 
