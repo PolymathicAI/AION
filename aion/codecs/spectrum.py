@@ -55,7 +55,8 @@ class AutoencoderSpectrumCodec(Codec):
         return self._quantizer
 
     def _encode(self, x: Spectrum) -> Float[torch.Tensor, "b c t"]:
-        x = pad_spectrum(x)
+        if hasattr(x, "pad_length"):
+            x = pad_spectrum(x)
 
         # Extract fields from Spectrum instance
         flux = x.flux
