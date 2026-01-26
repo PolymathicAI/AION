@@ -6,6 +6,7 @@ from jaxtyping import Float, Real
 from aion.codecs.base import Codec
 from aion.codecs.modules.convnext import ConvNextDecoder1d, ConvNextEncoder1d
 from aion.codecs.modules.spectrum import LatentSpectralGrid
+from aion.codecs.preprocessing.spectrum import pad_spectrum
 from aion.codecs.quantizers import LucidrainsLFQ, Quantizer, ScalarLinearQuantizer
 from aion.codecs.utils import CodecPytorchHubMixin
 from aion.modalities import Spectrum
@@ -54,6 +55,9 @@ class AutoencoderSpectrumCodec(Codec):
         return self._quantizer
 
     def _encode(self, x: Spectrum) -> Float[torch.Tensor, "b c t"]:
+        if hasattr(x, "pad_length"):
+            x = pad_spectrum(x)
+
         # Extract fields from Spectrum instance
         flux = x.flux
         ivar = x.ivar

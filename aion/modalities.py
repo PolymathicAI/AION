@@ -97,6 +97,7 @@ class Spectrum(Modality):
     ivar: Float[Tensor, " batch length"]
     mask: Bool[Tensor, " batch length"]
     wavelength: Float[Tensor, " batch length"]
+    pad_length: ClassVar[int]
 
     def __repr__(self) -> str:
         repr_str = (
@@ -112,6 +113,7 @@ class DESISpectrum(Spectrum):
 
     token_key: ClassVar[str] = "tok_spectrum_desi"
     num_tokens: ClassVar[int] = 273
+    pad_length: ClassVar[int] = 7808
 
 
 class SDSSSpectrum(Spectrum):
@@ -119,6 +121,7 @@ class SDSSSpectrum(Spectrum):
 
     token_key: ClassVar[str] = "tok_spectrum_sdss"
     num_tokens: ClassVar[int] = 273
+    pad_length: ClassVar[int] = 4800
 
 
 # Catalog modality
