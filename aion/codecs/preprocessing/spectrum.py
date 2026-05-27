@@ -9,7 +9,7 @@ def pad_spectrum(x: Spectrum) -> Spectrum:
     Note: Each of the sequence attributes (flux, ivar,
           mask, wavelength) should be 2D tensors.
     """
-    padding_values = {"lambda": 99999, "mask": True, "ivar": 0}
+    padding_values = {"wavelength": 99999, "mask": True, "ivar": 0}
 
     for k in ["flux", "ivar", "mask", "wavelength"]:
         setattr(
