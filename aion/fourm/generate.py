@@ -1503,15 +1503,21 @@ class GenerationSampler(nn.Module):
         seed=None,
     ):
         """Generates a sequence of tokens from the input modalities.
-        :param mod_dict: Dictionary of modalities.
-        :param schedule: Schedule of modalities to use.
-            List of dictionaries containing {target_domain, scheme, num_tokens, temperature, cfg_scale, cfg_cond_domains}.
-        :param top_k: top_k > 0: Keep only top k tokens with highest probability (a.k.a. top-k filtering).
-        :param top_p: top_p > 0.0: Keep the top tokens with cumulative probability >= top_p (a.k.a. nucleus filtering).
-        :param text_tokenizer: Text tokenizer.
-        :param verbose: Whether to print progress.
-        :param seed: Random seed.
-        :return: Generated mod dict.
+
+        Args:
+            mod_dict: Dictionary of modalities.
+            schedule: Schedule of modalities to use. A list of dictionaries containing
+                ``target_domain``, ``scheme``, ``num_tokens``, ``temperature``,
+                ``cfg_scale``, and ``cfg_cond_domains``.
+            top_k: If greater than zero, keep only the top-k tokens.
+            top_p: If greater than zero, keep tokens with cumulative probability at
+                least this value (nucleus filtering).
+            text_tokenizer: Text tokenizer.
+            verbose: Whether to print progress.
+            seed: Random seed.
+
+        Returns:
+            Generated modality dictionary.
         """
 
         # Input embedding -> tokenizes the modalities - Many are placeholder for now
@@ -1616,15 +1622,21 @@ class GenerationSampler(nn.Module):
         seed=None,
     ):
         """Iterator that generates a sequence of tokens from the input modalities step by step.
-        :param mod_dict: Dictionary of modalities.
-        :param schedule: Schedule of modalities to use.
-            List of dictionaries containing {target_domain, scheme, num_tokens, temperature, cfg_scale, cfg_cond_domains}.
-        :param top_k: top_k > 0: Keep only top k tokens with highest probability (a.k.a. top-k filtering).
-        :param top_p: top_p > 0.0: Keep the top tokens with cumulative probability >= top_p (a.k.a. nucleus filtering).
-        :param text_tokenizer: Text tokenizer.
-        :param verbose: Whether to print progress.
-        :param seed: Random seed.
-        :return: Iterator of generated mod dict.
+
+        Args:
+            mod_dict: Dictionary of modalities.
+            schedule: Schedule of modalities to use. A list of dictionaries containing
+                ``target_domain``, ``scheme``, ``num_tokens``, ``temperature``,
+                ``cfg_scale``, and ``cfg_cond_domains``.
+            top_k: If greater than zero, keep only the top-k tokens.
+            top_p: If greater than zero, keep tokens with cumulative probability at
+                least this value (nucleus filtering).
+            text_tokenizer: Text tokenizer.
+            verbose: Whether to print progress.
+            seed: Random seed.
+
+        Yields:
+            Generated modality dictionaries after each schedule step.
         """
 
         # Input embedding -> tokenizes the modalities - Many are placeholder for now

@@ -115,9 +115,11 @@ class ScalarReservoirQuantizer(Quantizer):
         self, z_e: torch.Tensor
     ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         """Performs a forward pass through the vector quantizer.
+
         Args:
             z_e: torch.Tensor (B)
                 The input tensor to be quantized.
+
         Returns:
             z_q: torch.Tensor (B)
                 The quantized tensor.
@@ -473,9 +475,11 @@ class MultiScalarCompressedReservoirQuantizer(Quantizer):
         self, z_e: torch.Tensor
     ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         """Performs a forward pass through the vector quantizer.
+
         Args:
             z_e: torch.Tensor (B, C, ...)
                 The input tensor to be quantized.
+
         Returns:
             z_q: torch.Tensor
                 The quantized tensor.
@@ -532,9 +536,11 @@ class ComposedScalarQuantizer(Quantizer):
         self, z_es: Dict[str, torch.Tensor]
     ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         """Performs a forward pass through the vector quantizer.
+
         Args:
             z_es: Dict[str, torch.Tensor]
                 The input tensor to be quantized.
+
         Returns:
             z_qs: torch.Tensor
                 The quantized tensor.
@@ -644,9 +650,11 @@ class IdentityQuantizer(Quantizer):
         self, z_e: torch.Tensor
     ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         """Performs a forward pass through the vector quantizer.
+
         Args:
             z_e: torch.Tensor (B, C, ...)
                 The input tensor to be quantized.
+
         Returns:
             z_q: torch.Tensor
                 The quantized tensor.

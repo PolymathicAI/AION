@@ -236,9 +236,11 @@ class LucidrainsLFQ(Quantizer):
         self, z_e: torch.Tensor
     ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         """Performs a forward pass through the vector quantizer.
+
         Args:
             z_e: Tensor (B, C, ...)
                 The input tensor to be quantized.
+
         Returns:
             z_q: Tensor
                 The quantized tensor.
@@ -314,9 +316,11 @@ class ScalarLinearQuantizer(Quantizer):
         self, z_e: torch.Tensor
     ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         """Performs a forward pass through the vector quantizer.
+
         Args:
             z_e: Tensor (B, C, ...)
                 The input tensor to be quantized.
+
         Returns:
             z_q: Tensor
                 The quantized tensor.

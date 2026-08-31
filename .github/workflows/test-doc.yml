@@ -5,7 +5,7 @@ on:
     paths:
       - 'docs/**'
       - 'aion/**'
-      - '.github/workflows/docs-check.yml'
+      - '.github/workflows/test-doc.yml'
       - 'pyproject.toml'
 
 jobs:
