@@ -39,12 +39,12 @@ from aion.codecs import CodecManager
 from aion.modalities import LegacySurveyImage
 
 # Load model and codec manager
-model = AION.from_pretrained('aion-base').to('cuda')  # or 'aion-large', 'aion-xlarge'
+model = AION.from_pretrained('polymathic-ai/aion-base').to('cuda')  # or 'aion-large', 'aion-xlarge'
 codec_manager = CodecManager(device='cuda')
 
 # Prepare your astronomical data (example: Legacy Survey image)
 image = LegacySurveyImage(
-    flux=your_image_tensor,  # Shape: [batch, 4, height, width] for g,r,i,z bands
+    flux=your_image_torch_tensor,  # Shape: [batch, 4, height, width] for g,r,i,z bands
     bands=['DES-G', 'DES-R', 'DES-I', 'DES-Z']
 )
 
