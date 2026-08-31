@@ -3,7 +3,39 @@ import torch
 
 from aion.codecs import ImageCodec
 from aion.codecs.config import HF_REPO_ID
+from aion.codecs.preprocessing.image import RescaleToLegacySurvey
 from aion.modalities import Image
+
+
+def test_hsc_rescaling_uses_legacy_survey_zeropoint():
+    rescaler = RescaleToLegacySurvey()
+    image = torch.tensor([[[[-2.5, 0.0], [1.0, 12.5]]]])
+    scale = rescaler.convert_zeropoint(27.0)
+
+    rescaled = rescaler.forward(image.clone(), "HSC")
+
+    assert torch.allclose(rescaled, image / scale)
+
+
+def test_hsc_rescaling_round_trip():
+    rescaler = RescaleToLegacySurvey()
+    image = torch.tensor([[[[-2.5, 0.0], [1.0, 12.5]]]])
+
+    rescaled = rescaler.forward(image.clone(), "HSC")
+    restored = rescaler.backward(rescaled, "HSC")
+
+    assert torch.allclose(restored, image)
+
+
+def test_non_hsc_rescaling_is_unchanged():
+    rescaler = RescaleToLegacySurvey()
+    image = torch.tensor([[[[-2.5, 0.0], [1.0, 12.5]]]])
+
+    rescaled = rescaler.forward(image.clone(), "DES")
+    restored = rescaler.backward(rescaled, "DES")
+
+    assert torch.equal(rescaled, image)
+    assert torch.equal(restored, image)
 
 
 @pytest.mark.parametrize("embedding_dim", [5, 10])
