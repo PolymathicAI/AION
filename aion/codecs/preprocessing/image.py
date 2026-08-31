@@ -102,6 +102,6 @@ class RescaleToLegacySurvey:
         return image
 
     def backward(self, image, survey):
-        zpscale = self._reverse_zeropoint(27.0) if survey == "HSC" else 1.0
+        zpscale = self.reverse_zeropoint(27.0) if survey == "HSC" else 1.0
         image *= zpscale
         return image
