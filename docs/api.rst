@@ -29,24 +29,39 @@ Base Classes
 Image Modalities
 ~~~~~~~~~~~~~~~~
 
-.. automodule:: aion.modalities
-   :members: LegacySurveyImage, HSCImage
+.. autoclass:: aion.modalities.LegacySurveyImage
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.HSCImage
+   :members:
    :undoc-members:
    :show-inheritance:
 
 Spectrum Modalities
 ~~~~~~~~~~~~~~~~~~~
 
-.. automodule:: aion.modalities
-   :members: DESISpectrum, SDSSSpectrum
+.. autoclass:: aion.modalities.DESISpectrum
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.SDSSSpectrum
+   :members:
    :undoc-members:
    :show-inheritance:
 
 Catalog Modalities
 ~~~~~~~~~~~~~~~~~~
 
-.. automodule:: aion.modalities
-   :members: LegacySurveyCatalog, LegacySurveySegmentationMap
+.. autoclass:: aion.modalities.LegacySurveyCatalog
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.LegacySurveySegmentationMap
+   :members:
    :undoc-members:
    :show-inheritance:
 
@@ -56,42 +71,195 @@ Scalar Modalities
 Legacy Survey Scalars
 ^^^^^^^^^^^^^^^^^^^^^^
 
-.. automodule:: aion.modalities
-   :members: LegacySurveyFluxG, LegacySurveyFluxR, LegacySurveyFluxI, LegacySurveyFluxZ, LegacySurveyFluxW1, LegacySurveyFluxW2, LegacySurveyFluxW3, LegacySurveyFluxW4, LegacySurveyShapeR, LegacySurveyShapeE1, LegacySurveyShapeE2, LegacySurveyEBV
+.. autoclass:: aion.modalities.LegacySurveyFluxG
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.LegacySurveyFluxR
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.LegacySurveyFluxI
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.LegacySurveyFluxZ
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.LegacySurveyFluxW1
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.LegacySurveyFluxW2
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.LegacySurveyFluxW3
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.LegacySurveyFluxW4
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.LegacySurveyShapeR
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.LegacySurveyShapeE1
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.LegacySurveyShapeE2
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.LegacySurveyEBV
+   :members:
    :undoc-members:
    :show-inheritance:
 
 HSC Scalars
 ~~~~~~~~~~~
 
-.. automodule:: aion.modalities
-   :members: HSCAG, HSCAR, HSCAI, HSCAZ, HSCAY, HSCMagG, HSCMagR, HSCMagI, HSCMagZ, HSCMagY, HSCShape11, HSCShape22, HSCShape12
+.. autoclass:: aion.modalities.HSCAG
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.HSCAR
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.HSCAI
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.HSCAZ
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.HSCAY
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.HSCMagG
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.HSCMagR
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.HSCMagI
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.HSCMagZ
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.HSCMagY
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.HSCShape11
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.HSCShape22
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.HSCShape12
+   :members:
    :undoc-members:
    :show-inheritance:
 
 Gaia Scalars
 ~~~~~~~~~~~~
 
-.. automodule:: aion.modalities
-   :members: GaiaFluxG, GaiaFluxBp, GaiaFluxRp, GaiaParallax, GaiaXpBp, GaiaXpRp
+.. autoclass:: aion.modalities.GaiaFluxG
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.GaiaFluxBp
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.GaiaFluxRp
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.GaiaParallax
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.GaiaXpBp
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.GaiaXpRp
+   :members:
    :undoc-members:
    :show-inheritance:
 
 Coordinate Scalars
 ~~~~~~~~~~~~~~~~~~
 
-.. automodule:: aion.modalities
-   :members: Ra, Dec, Z
+.. autoclass:: aion.modalities.Ra
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.Dec
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: aion.modalities.Z
+   :members:
    :undoc-members:
    :show-inheritance:
 
 Utility Types
 ~~~~~~~~~~~~~
 
-.. automodule:: aion.modalities
-   :members: ScalarModalities, ModalityType
-   :undoc-members:
-   :show-inheritance:
+.. py:data:: ScalarModalities
+
+   Mapping from scalar modality names to their corresponding modality classes.
+
+.. py:data:: ModalityType
+
+   Union type covering all supported modality data structures.
 
 Codec System
 ------------
